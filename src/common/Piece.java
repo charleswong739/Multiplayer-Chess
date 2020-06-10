@@ -1,3 +1,5 @@
+package common;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -5,17 +7,24 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * 
+ * @author Charles Wong
+ *
+ */
 public abstract class Piece {
 	
 	private int point;
 	private BufferedImage sprite;
 	private Team team;
+	private Position position;
 	
-	public Piece (String spriteName, int p, Team t) {
+	public Piece (String spriteName, int p, Team t, Position pos) {
 		point = p;
 		team = t;
+		position = pos;
 		
-		String filePath = "sprite";
+		String filePath = "sprites";
 		
 		if (t == Team.WHITE) {
 			filePath += "/white/";
@@ -42,6 +51,10 @@ public abstract class Piece {
 	
 	public Team getTeam() {
 		return team;
+	}
+	
+	public Position getPos() {
+		return position;
 	}
 	
 	public abstract Position[] possibleMoves();

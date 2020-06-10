@@ -1,8 +1,14 @@
+package common;
 
+/**
+ * 
+ * @author Charles Wong
+ *
+ */
 public class Pawn extends Piece {
 
-	public Pawn(Team t) {
-		super ("pawn", 1, t);
+	public Pawn(Team t, Position p) {
+		super ("pawn", 1, t, p);
 	}
 
 	@Override
