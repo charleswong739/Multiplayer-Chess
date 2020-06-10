@@ -1,11 +1,7 @@
 package common;
 
 /**
- * Utility class for wrapping a position on the chess board. Allows for intuitive usage
- * mirroring real life board position namings while converting to the correct array index
- * internally.
- * <p>
- * Note: I really want this but we can change it if no one likes it.
+ * Utility class for wrapping a position on the chess board.
  * 
  * @author Charles Wong
  *
@@ -28,6 +24,6 @@ public class Position {
 
 	public Position(int f, int r) {
 		file = f;
-		rank = r - 1;
+		rank = r;
 	}
 }
