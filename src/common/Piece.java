@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import client.ClientBoard;
+
 /**
  * 
  * @author Charles Wong
@@ -16,8 +18,8 @@ public abstract class Piece {
 	
 	private int point;
 	private BufferedImage sprite;
-	private Team team;
-	private Position position;
+	protected Team team;
+	protected Position position;
 	
 	public Piece (String spriteName, int p, Team t, Position pos) {
 		point = p;
@@ -57,5 +59,5 @@ public abstract class Piece {
 		return position;
 	}
 	
-	public abstract Position[] possibleMoves();
+	public abstract Position[] possibleMoves(ClientBoard board);
 }

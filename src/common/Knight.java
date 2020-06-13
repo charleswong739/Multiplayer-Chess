@@ -1,5 +1,7 @@
 package common;
 
+import client.ClientBoard;
+
 public class Knight extends Piece {
 
 	public Knight(Team t, Position pos) {
@@ -7,7 +9,7 @@ public class Knight extends Piece {
 	}
 
 	@Override
-	public Position[] possibleMoves() {
+	public Position[] possibleMoves(ClientBoard board) {
 		// TODO Auto-generated method stub
 		return null;
 	}

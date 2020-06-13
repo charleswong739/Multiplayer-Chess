@@ -11,7 +11,7 @@
 
 # Chess Board Array Arrangement
 
-Piece[rank][file]  
+Piece[file][rank]  
 
 i.e. In order to iterate through row 3, you would have to do  
 

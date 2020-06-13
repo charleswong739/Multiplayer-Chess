@@ -1,5 +1,9 @@
 package common;
 
+import java.util.ArrayList;
+
+import client.ClientBoard;
+
 /**
  * 
  * @author Charles Wong
@@ -12,8 +16,17 @@ public class Pawn extends Piece {
 	}
 
 	@Override
-	public Position[] possibleMoves() {
-		// TODO Auto-generated method stub
+	public Position[] possibleMoves(ClientBoard board) {
+		ArrayList<Position> list = new ArrayList<Position>(3);
+		
+		if (team == Team.WHITE) {
+			Position pleft = new Position(position.file-1, position.rank+1);
+			if (pleft.rank > 0) {
+				if (board.getBoard()[pleft.rank][pleft.file].getTeam() == Team.BLACK) {
+					list.add(pleft);
+				}
+			}
+		}
 		return null;
 	}
 

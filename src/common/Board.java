@@ -10,6 +10,9 @@ public abstract class Board {
 
 	protected Piece[][] chessBoard;
 	
+	private King whiteKing;
+	private King blackKing;
+	
 	protected Board() {
 		//initialize white pawns
 		for (int i = 0; i < 7; i++) {
@@ -33,7 +36,8 @@ public abstract class Board {
 		chessBoard[3][0] = new Queen(Team.WHITE, new Position(Position.D, 0));
 		
 		//white king
-		chessBoard[4][0] = new King(Team.WHITE, new Position(Position.E, 0));
+		whiteKing = new King(Team.WHITE, new Position(Position.E, 0));
+		chessBoard[4][0] = whiteKing;
 		
 		//initialize black pawns
 		for (int i = 0; i < 7; i++) {
@@ -57,10 +61,19 @@ public abstract class Board {
 		chessBoard[3][7] = new Queen(Team.WHITE, new Position(Position.D, 7));
 
 		//white king
-		chessBoard[4][7] = new King(Team.WHITE, new Position(Position.E, 7));
+		blackKing = new King(Team.WHITE, new Position(Position.E, 7));
+		chessBoard[4][7] = blackKing;
 	}
 
 	public Piece[][] getBoard() {
 		return chessBoard;
+	}
+	
+	public King getWhiteKing() {
+		return whiteKing;
+	}
+	
+	public King getBlackKing() {
+		return blackKing;
 	}
 }
