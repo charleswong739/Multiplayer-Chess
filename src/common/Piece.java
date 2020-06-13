@@ -39,7 +39,7 @@ public abstract class Piece {
 		try {
 			sprite = ImageIO.read(new File(filePath));
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 	

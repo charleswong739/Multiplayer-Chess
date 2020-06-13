@@ -2,6 +2,11 @@ package common;
 
 import client.ClientBoard;
 
+/**
+ * 
+ * @author Charles Wong
+ *
+ */
 public class Knight extends Piece {
 
 	public Knight(Team t, Position pos) {

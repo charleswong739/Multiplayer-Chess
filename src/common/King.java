@@ -2,6 +2,11 @@ package common;
 
 import client.ClientBoard;
 
+/**
+ * 
+ * @author Charles Wong
+ *
+ */
 public class King extends Piece {
 
 	public King(Team t, Position pos) {
@@ -20,10 +25,8 @@ public class King extends Piece {
 	 * @param board the ClientBoard object the King is in
 	 * @return true if the King is in check, false otherwise
 	 */
-	public boolean inCheck(ClientBoard board) {
+	public boolean inCheck(Piece[][] chessBoard) {
 		
-		Piece[][] chessBoard = board.getBoard();
-
 		Team enemy;
 		if (team == Team.WHITE) {
 			enemy = Team.BLACK;

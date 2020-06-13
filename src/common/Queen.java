@@ -2,6 +2,11 @@ package common;
 
 import client.ClientBoard;
 
+/**
+ * 
+ * @author Charles Wong
+ *
+ */
 public class Queen extends Piece {
 
 	public Queen(Team t, Position pos) {

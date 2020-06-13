@@ -19,7 +19,6 @@ public abstract class Board {
 		//initialize white pawns
 		for (int i = 0; i < 8; i++) {
 			Position p = new Position(i, 1);
-			System.out.println(p.toString());
 			chessBoard[p.file][p.rank] = new Pawn(Team.WHITE, p);
 		}
 		

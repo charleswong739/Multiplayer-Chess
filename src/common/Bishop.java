@@ -2,6 +2,11 @@ package common;
 
 import client.ClientBoard;
 
+/**
+ * 
+ * @author Charles Wong
+ *
+ */
 public class Bishop extends Piece {
 
 	public Bishop(Team t, Position pos) {
