@@ -26,4 +26,9 @@ public class Position {
 		file = f;
 		rank = r;
 	}
+	
+	public String toString() {
+		String s = "ABCDEFGH";
+		return "(" + s.charAt(file) + ", " + (rank + 1) + ")";
+	}
 }

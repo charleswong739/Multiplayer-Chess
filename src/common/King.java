@@ -31,10 +31,12 @@ public class King extends Piece {
 			// Check pawns (only pawns are dependent on team)
 			if (position.rank < 6) { // black pawns cannot be behind rank 7 (index 6)
 				if (position.file < 7) {
-					return isPiece(chessBoard, position.file+1, position.rank+1, enemy, Pawn.class);
+					if (isPiece(chessBoard, position.file+1, position.rank+1, enemy, Pawn.class))
+						return true;
 				}
 				if (position.file > 0) {
-					return isPiece(chessBoard, position.file-1, position.rank+1, enemy, Pawn.class);
+					if (isPiece(chessBoard, position.file-1, position.rank+1, enemy, Pawn.class))
+						return true;
 				}
 			}
 
@@ -44,10 +46,12 @@ public class King extends Piece {
 			// Check pawns
 			if (position.rank > 1) { // white pawns cannot be behind rank 2 (index 1)
 				if (position.file < 7) {
-					return isPiece(chessBoard, position.file+1, position.rank-1, enemy, Pawn.class);
+					if (isPiece(chessBoard, position.file+1, position.rank-1, enemy, Pawn.class))
+						return true;
 				}
 				if (position.file > 0) {
-					return isPiece(chessBoard, position.file-1, position.rank-1, enemy, Pawn.class);
+					if (isPiece(chessBoard, position.file-1, position.rank-1, enemy, Pawn.class))
+						return true;
 				}
 			}
 		}
@@ -55,36 +59,44 @@ public class King extends Piece {
 		// Check knights
 		if (position.rank > 0) {
 			if (position.file > 1) {
-				return isPiece(chessBoard, position.file-2, position.rank-1, enemy, Knight.class);
+				if (isPiece(chessBoard, position.file-2, position.rank-1, enemy, Knight.class))
+					return true;
 			}
 			if (position.file < 6) {
-				return isPiece(chessBoard, position.file+2, position.rank-1, enemy, Knight.class);
+				if (isPiece(chessBoard, position.file+2, position.rank-1, enemy, Knight.class))
+					return true;
 			}
 
 			if (position.rank > 1) { // if it's not greater than 0, it's not greater than 1
 				if (position.file > 0) {
-					return isPiece(chessBoard, position.file-1, position.rank-2, enemy, Knight.class);
+					if (isPiece(chessBoard, position.file-1, position.rank-2, enemy, Knight.class))
+						return true;
 				}
 				if (position.file < 7) {
-					return isPiece(chessBoard, position.file+1, position.rank-2, enemy, Knight.class);
+					if (isPiece(chessBoard, position.file+1, position.rank-2, enemy, Knight.class))
+						return true;
 				}
 			}
 		}
 
 		if (position.rank < 7) {
 			if (position.file > 1) {
-				return isPiece(chessBoard, position.file-2, position.rank+1, enemy, Knight.class);
+				if (isPiece(chessBoard, position.file-2, position.rank+1, enemy, Knight.class))
+					return true;
 			}
 			if (position.file < 6) {
-				return isPiece(chessBoard, position.file+2, position.file-1, enemy, Knight.class);
+				if (isPiece(chessBoard, position.file+2, position.rank+1, enemy, Knight.class))
+					return true;
 			}
 
 			if (position.rank < 6) {
 				if (position.file > 0) {
-					return isPiece(chessBoard, position.file-1, position.rank+2, enemy, Knight.class);
+					if (isPiece(chessBoard, position.file-1, position.rank+2, enemy, Knight.class))
+						return true;
 				}
 				if (position.file < 7) {
-					return isPiece(chessBoard, position.file+1, position.rank+2, enemy, Knight.class);
+					if (isPiece(chessBoard, position.file+1, position.rank+2, enemy, Knight.class))
+						return true;
 				}
 			}
 		}
@@ -211,6 +223,8 @@ public class King extends Piece {
 	}
 	
 	private boolean isPiece (Piece[][] board, int file, int rank, Team t, Class<?> c) {
+		if (board[file][rank] == null)
+			return false;
 		return (board[file][rank].team == t && board[file][rank].getClass() == c);
 	}
 }

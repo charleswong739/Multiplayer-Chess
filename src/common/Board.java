@@ -14,10 +14,13 @@ public abstract class Board {
 	private King blackKing;
 	
 	protected Board() {
+		chessBoard = new Piece[8][8];
+		
 		//initialize white pawns
-		for (int i = 0; i < 7; i++) {
-			Position p = new Position(i, 2);
-			chessBoard[p.rank][p.file] = new Pawn(Team.WHITE, p);
+		for (int i = 0; i < 8; i++) {
+			Position p = new Position(i, 1);
+			System.out.println(p.toString());
+			chessBoard[p.file][p.rank] = new Pawn(Team.WHITE, p);
 		}
 		
 		//white rooks
@@ -40,9 +43,9 @@ public abstract class Board {
 		chessBoard[4][0] = whiteKing;
 		
 		//initialize black pawns
-		for (int i = 0; i < 7; i++) {
-			Position p = new Position(i, 7);
-			chessBoard[p.rank][p.file] = new Pawn(Team.BLACK, p);
+		for (int i = 0; i < 8; i++) {
+			Position p = new Position(i, 6);
+			chessBoard[p.file][p.rank] = new Pawn(Team.BLACK, p);
 		}
 
 		//white rooks

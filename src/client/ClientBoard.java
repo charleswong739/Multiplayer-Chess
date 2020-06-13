@@ -15,7 +15,7 @@ public class ClientBoard extends Board{
 	private BufferedImage bg;
 	private Team orientation;
 
-	ClientBoard(Team o) {
+	public ClientBoard(Team o) {
 		super();
 		orientation = o;
 		
@@ -29,4 +29,5 @@ public class ClientBoard extends Board{
 	public void draw(Graphics g, int x, int y) {
 		
 	}
+	
 }
