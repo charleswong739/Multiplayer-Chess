@@ -1,5 +1,7 @@
 package common;
 
+import java.util.ArrayList;
+
 import client.ClientBoard;
 
 /**
@@ -15,7 +17,79 @@ public class King extends Piece {
 
 	@Override
 	public Position[] possibleMoves(ClientBoard board) {
-		// TODO Auto-generated method stub
+		ArrayList<Position> list = new ArrayList<Position>();
+		Piece[][] chessBoard = board.getBoard();
+		
+		Position target;
+		if (position.rank < 7) {
+			if (position.file < 7) {
+				target = new Position(position.file, position.rank+1); // up
+				if (chessBoard[target.file][target.rank] == null || chessBoard[target.file][target.rank].team != team) {
+					if (board.simulateMove(position, target)) {
+						list.add(target);
+					}
+				}
+				
+				target = new Position(position.file+1, position.rank+1); // up right
+				if (chessBoard[target.file][target.rank] == null || chessBoard[target.file][target.rank].team != team) {
+					if (board.simulateMove(position, target)) {
+						list.add(target);
+					}
+				}
+				
+				target = new Position(position.file+1, position.rank); // right
+				if (chessBoard[target.file][target.rank] == null || chessBoard[target.file][target.rank].team != team) {
+					if (board.simulateMove(position, target)) {
+						list.add(target);
+					}
+				}
+			}
+			
+			if (position.file > 0) {
+				target = new Position(position.file-1, position.rank+1); // up left
+				if (chessBoard[target.file][target.rank] == null || chessBoard[target.file][target.rank].team != team) {
+					if (board.simulateMove(position, target)) {
+						list.add(target);
+					}
+				}
+				
+				target = new Position(position.file-1, position.rank); // left
+				if (chessBoard[target.file][target.rank] == null || chessBoard[target.file][target.rank].team != team) {
+					if (board.simulateMove(position, target)) {
+						list.add(target);
+					}
+				}
+			}
+		}
+		
+		if (position.rank > 0) {
+			if (position.file < 7) {
+				target = new Position(position.file+1, position.rank-1); // down right
+				if (chessBoard[target.file][target.rank] == null || chessBoard[target.file][target.rank].team != team) {
+					if (board.simulateMove(position, target)) {
+						list.add(target);
+					}
+				}
+				
+				target = new Position(position.file, position.rank-1); // down
+				if (chessBoard[target.file][target.rank] == null || chessBoard[target.file][target.rank].team != team) {
+					if (board.simulateMove(position, target)) {
+						list.add(target);
+					}
+				}
+			}
+			
+			if (position.file > 0) {
+				target = new Position(position.file-1, position.rank-1); // down left
+				if (chessBoard[target.file][target.rank] == null || chessBoard[target.file][target.rank].team != team) {
+					if (board.simulateMove(position, target)) {
+						list.add(target);
+					}
+				}
+			}
+		}
+		
+		
 		return null;
 	}
 

@@ -13,6 +13,11 @@ import common.Piece;
 import common.Position;
 import common.Team;
 
+/**
+ * 
+ * @author Charles Wong
+ *
+ */
 public class ClientBoard extends Board{
 
 	private BufferedImage bg;

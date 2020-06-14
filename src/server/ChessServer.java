@@ -8,6 +8,11 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * 
+ * @author Michael Du
+ *
+ */
 public class ChessServer {
 
 
