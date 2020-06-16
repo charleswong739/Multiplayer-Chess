@@ -34,12 +34,12 @@ public abstract class Piece {
 			filePath += "/black/";
 		}
 		
-		filePath += spriteName;
+		filePath += spriteName + ".png";
 		
 		try {
 			sprite = ImageIO.read(new File(filePath));
 		} catch (IOException e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	

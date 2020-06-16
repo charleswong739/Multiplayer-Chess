@@ -28,14 +28,33 @@ public class ClientBoard extends Board{
 		orientation = o;
 		
 		try {
-			bg = ImageIO.read(new File("sprites/bg"));
+			bg = ImageIO.read(new File("sprites/bg.png"));
 		} catch (IOException e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	
 	public void draw(Graphics g, int x, int y) {
+		g.drawImage(bg, x, y, null);
 		
+		int pieceX;
+		int pieceY;
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (orientation == Team.WHITE) {
+					pieceX = i * 60;
+					pieceY = 420 - j * 60;
+				} else {
+					pieceX = 420 - i * 60;
+					pieceY = j * 60;
+				}
+				
+				if (chessBoard[i][j] != null) {
+					chessBoard[i][j].draw(g, pieceX, pieceY);
+				}
+			}
+		}
 	}
 	
 	/**

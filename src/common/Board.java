@@ -48,22 +48,22 @@ public abstract class Board {
 		}
 
 		//white rooks
-		chessBoard[0][7] = new Rook(Team.WHITE, new Position(Position.A, 7));
-		chessBoard[7][7] = new Rook(Team.WHITE, new Position(Position.H, 7));
+		chessBoard[0][7] = new Rook(Team.BLACK, new Position(Position.A, 7));
+		chessBoard[7][7] = new Rook(Team.BLACK, new Position(Position.H, 7));
 
 		//white knights
-		chessBoard[1][7] = new Knight(Team.WHITE, new Position(Position.B, 7));
-		chessBoard[6][7] = new Knight(Team.WHITE, new Position(Position.G, 7));
+		chessBoard[1][7] = new Knight(Team.BLACK, new Position(Position.B, 7));
+		chessBoard[6][7] = new Knight(Team.BLACK, new Position(Position.G, 7));
 
 		//white bishops
-		chessBoard[2][7] = new Bishop(Team.WHITE, new Position(Position.C, 7));
-		chessBoard[5][7] = new Bishop(Team.WHITE, new Position(Position.F, 7));
+		chessBoard[2][7] = new Bishop(Team.BLACK, new Position(Position.C, 7));
+		chessBoard[5][7] = new Bishop(Team.BLACK, new Position(Position.F, 7));
 
 		//white queen
-		chessBoard[3][7] = new Queen(Team.WHITE, new Position(Position.D, 7));
+		chessBoard[3][7] = new Queen(Team.BLACK, new Position(Position.D, 7));
 
 		//white king
-		blackKing = new King(Team.WHITE, new Position(Position.E, 7));
+		blackKing = new King(Team.BLACK, new Position(Position.E, 7));
 		chessBoard[4][7] = blackKing;
 	}
 
