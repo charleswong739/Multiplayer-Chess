@@ -5,12 +5,11 @@ class ChessClient {
     
     final String LOCAL_HOST = "127.0.0.1";
     final int PORT = 5000;
-    String team;
     Socket mySocket;      
     BufferedReader input;     
     PrintWriter output;       
     boolean running = true;   
-    
+    String team;
      public static void main (String[] args) { 
         ChessClient client = new ChessClient();
         client.go();
@@ -45,8 +44,6 @@ class ChessClient {
   }
   public void readMessagesFromServer() { 
       boolean firstTurn = true;
-    Scanner scanner = new Scanner(System.in);
-    team = scanner.nextLine();
   while(running) {  // loop unit a message is received
       try {
         
@@ -55,12 +52,27 @@ class ChessClient {
           msg = input.readLine(); //read the message
           if(msg.equals("Server Ready")) {
               output.println("READY");
+              output.flush();
           }
           else {
-              if(team.equals("W") && firstTurn) {
-                  output.println("BoardW");
-              }
-          output.println(msg+" Board"+team);
+              if(firstTurn) {
+                  if(msg.equals("First")) {
+                      team="White";
+                      msg = "";
+                  } else {
+                      team="Black";
+                  }
+                  firstTurn = false;
+              } 
+              
+              //First decode string to board
+              //Then update board array
+              //Wait for move
+              //Encode new board into string
+              //Send to server
+              output.println(msg+" Board"+team);
+              output.flush();
+              
           }
         }
         
