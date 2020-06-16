@@ -182,7 +182,7 @@ public class King extends Piece {
 		Position checker = new Position(position.file, position.rank);
 
 		while (checker.file < 7 && checker.rank < 7) { // up right
-			if (chessBoard[checker.file+1][checker.rank+1].team == team)
+			if (chessBoard[checker.file+1][checker.rank+1] != null && chessBoard[checker.file+1][checker.rank+1].team == team)
 				break;
 			if (isPiece(chessBoard, checker.file+1, checker.rank+1, enemy, Bishop.class) 
 					|| isPiece(chessBoard, checker.file+1, checker.rank+1, enemy, Queen.class))
@@ -198,7 +198,7 @@ public class King extends Piece {
 		checker.rank = position.rank;
 
 		while (checker.file < 7 && checker.rank > 0) { // down right
-			if (chessBoard[checker.file+1][checker.rank-1].team == team)
+			if (chessBoard[checker.file+1][checker.rank-1] != null && chessBoard[checker.file+1][checker.rank-1].team == team)
 				break;
 			if (isPiece(chessBoard, checker.file+1, checker.rank-1, enemy, Bishop.class) 
 					|| isPiece(chessBoard, checker.file+1, checker.rank-1, enemy, Queen.class))
@@ -214,7 +214,7 @@ public class King extends Piece {
 		checker.rank = position.rank;
 
 		while (checker.file > 0 && checker.rank < 7) { // up left
-			if (chessBoard[checker.file-1][checker.rank+1].team == team)
+			if (chessBoard[checker.file-1][checker.rank+1] != null && chessBoard[checker.file-1][checker.rank+1].team == team)
 				break;
 			if (isPiece(chessBoard, checker.file-1, checker.rank+1, enemy, Bishop.class) 
 					|| isPiece(chessBoard, checker.file-1, checker.rank+1, enemy, Queen.class))
@@ -230,7 +230,7 @@ public class King extends Piece {
 		checker.rank = position.rank;
 
 		while (checker.file > 0 && checker.rank > 0) { // down left
-			if (chessBoard[checker.file-1][checker.rank-1].team == team)
+			if (chessBoard[checker.file-1][checker.rank-1] != null && chessBoard[checker.file-1][checker.rank-1].team == team)
 				break;
 			if (isPiece(chessBoard, checker.file-1, checker.rank-1, enemy, Bishop.class) 
 					|| isPiece(chessBoard, checker.file-1, checker.rank-1, enemy, Queen.class))
@@ -247,7 +247,7 @@ public class King extends Piece {
 		checker.rank = position.rank;
 		
 		while (checker.rank < 7) { // up
-			if (chessBoard[checker.file][checker.rank+1].team == team)
+			if (chessBoard[checker.file][checker.rank+1] != null && chessBoard[checker.file][checker.rank+1].team == team)
 				break;
 			if (isPiece(chessBoard, checker.file, checker.rank+1, enemy, Rook.class) 
 					|| isPiece(chessBoard, checker.file, checker.rank+1, enemy, Queen.class))
@@ -260,7 +260,7 @@ public class King extends Piece {
 		checker.rank = position.rank;
 		
 		while (checker.rank > 0) { // down
-			if (chessBoard[checker.file][checker.rank-1].team == team)
+			if (chessBoard[checker.file][checker.rank-1] != null && chessBoard[checker.file][checker.rank-1].team == team)
 				break;
 			if (isPiece(chessBoard, checker.file, checker.rank-1, enemy, Rook.class) 
 					|| isPiece(chessBoard, checker.file, checker.rank-1, enemy, Queen.class))
@@ -273,7 +273,7 @@ public class King extends Piece {
 		checker.rank = position.rank;
 
 		while (checker.file > 0) { // left
-			if (chessBoard[checker.file-1][checker.rank].team == team)
+			if (chessBoard[checker.file-1][checker.rank] != null && chessBoard[checker.file-1][checker.rank].team == team)
 				break;
 			if (isPiece(chessBoard, checker.file-1, checker.rank, enemy, Rook.class) 
 					|| isPiece(chessBoard, checker.file-1, checker.rank, enemy, Queen.class))
@@ -286,7 +286,7 @@ public class King extends Piece {
 		checker.file = position.file;
 
 		while (checker.rank < 7) { // right
-			if (chessBoard[checker.file+1][checker.rank].team == team)
+			if (chessBoard[checker.file+1][checker.rank] != null && chessBoard[checker.file+1][checker.rank].team == team)
 				break;
 			if (isPiece(chessBoard, checker.file+1, checker.rank, enemy, Rook.class) 
 					|| isPiece(chessBoard, checker.file+1, checker.rank, enemy, Queen.class))

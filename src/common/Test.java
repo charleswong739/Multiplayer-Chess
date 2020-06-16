@@ -44,9 +44,13 @@ public class Test extends JFrame {
 			
 			/*------------------------------------------------*/
 			
-			cb.selectPiece(new Position(Position.B, 0));
-			cb.makeMove(new Position(Position.C, 2));
-			cb.selectPiece(new Position(Position.C, 2));
+			cb.selectPiece(new Position(Position.D, 1));
+			cb.makeMove(new Position(Position.D, 3));
+			cb.selectPiece(new Position(Position.D, 0));
+			cb.makeMove(new Position(Position.D, 2));
+			cb.selectPiece(new Position(Position.G, 0));
+			cb.makeMove(new Position(Position.F, 2));
+			cb.selectPiece(new Position(Position.D, 2));
 			
 			/*------------------------------------------------*/
 			
