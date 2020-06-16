@@ -100,8 +100,7 @@ public class ClientBoard extends Board{
 	 * Makes a move with the currently selected Piece after checking if the 
 	 * target Position is a valid move.
 	 * 
-	 * @param src The original position of a piece
-	 * @param tar The target position of a piece
+	 * @param tar The target position to move to
 	 * @return true if the move is valid and made, false otherwise
 	 */
 	public boolean makeMove(Position tar) {
