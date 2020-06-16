@@ -40,7 +40,16 @@ public class Test extends JFrame {
 		ClientBoard cb;
 		
 		Panel() {
-			cb = new ClientBoard(Team.BLACK);
+			cb = new ClientBoard(Team.WHITE);
+			
+			/*------------------------------------------------*/
+			
+			cb.selectPiece(new Position(Position.B, 0));
+			cb.makeMove(new Position(Position.C, 2));
+			cb.selectPiece(new Position(Position.C, 2));
+			
+			/*------------------------------------------------*/
+			
 			this.setPreferredSize(new Dimension(480, 480));
 		}
 		

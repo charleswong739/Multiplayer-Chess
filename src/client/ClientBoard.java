@@ -21,7 +21,13 @@ import common.Team;
 public class ClientBoard extends Board{
 
 	private BufferedImage bg;
+	private BufferedImage selectbg;
+	private BufferedImage movespoint;
+	
 	private Team orientation;
+	
+	private Piece selected;
+	private Position[] possibleMoves;
 
 	public ClientBoard(Team o) {
 		super();
@@ -29,6 +35,8 @@ public class ClientBoard extends Board{
 		
 		try {
 			bg = ImageIO.read(new File("sprites/bg.png"));
+			selectbg = ImageIO.read(new File("sprites/selectbg.png"));
+			movespoint = ImageIO.read(new File ("sprites/movespoint.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -36,6 +44,14 @@ public class ClientBoard extends Board{
 	
 	public void draw(Graphics g, int x, int y) {
 		g.drawImage(bg, x, y, null);
+		
+		if (selected != null) {
+			if (orientation == Team.WHITE) {
+				g.drawImage(selectbg, selected.getPos().file * 60, 420 - selected.getPos().rank * 60, null);
+			} else {
+				g.drawImage(selectbg, 420 - selected.getPos().file * 60, selected.getPos().rank * 60, null);
+			}
+		}
 		
 		int pieceX;
 		int pieceY;
@@ -55,6 +71,54 @@ public class ClientBoard extends Board{
 				}
 			}
 		}
+		
+		if (possibleMoves != null) {
+			for (int i = 0; i < possibleMoves.length; i++) {
+				if (orientation == Team.WHITE) {
+					g.drawImage(movespoint, possibleMoves[i].file * 60, 420 - possibleMoves[i].rank * 60, null);
+				} else {
+					g.drawImage(movespoint, 420 - possibleMoves[i].file * 60, possibleMoves[i].rank * 60, null);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Makes the designated Position selected if the piece in the position is the same team
+	 * as the current board orientation
+	 * 
+	 * @param p The Position to be designated as selected
+	 */
+	public void selectPiece(Position p) {
+		if (chessBoard[p.file][p.rank] != null && chessBoard[p.file][p.rank].getTeam() == orientation ) {
+			selected = chessBoard[p.file][p.rank];
+			possibleMoves = selected.possibleMoves(this);
+		}
+	}
+	
+	/**
+	 * Makes a move with the currently selected Piece after checking if the 
+	 * target Position is a valid move.
+	 * 
+	 * @param src The original position of a piece
+	 * @param tar The target position of a piece
+	 * @return true if the move is valid and made, false otherwise
+	 */
+	public boolean makeMove(Position tar) {
+		
+		for (int i = 0; i < possibleMoves.length; i++) {
+			if (possibleMoves[i].equals(tar)) {
+				chessBoard[tar.file][tar.rank] = selected;
+				chessBoard[selected.getPos().file][selected.getPos().rank] = null;
+				selected.setPos(tar);
+				
+				selected = null;
+				possibleMoves = null;
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	/**

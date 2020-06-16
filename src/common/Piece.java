@@ -59,5 +59,9 @@ public abstract class Piece {
 		return position;
 	}
 	
+	public void setPos(Position p) {
+		position = p;
+	}
+	
 	public abstract Position[] possibleMoves(ClientBoard board);
 }
