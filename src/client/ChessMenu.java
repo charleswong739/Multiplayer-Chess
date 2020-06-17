@@ -1,6 +1,5 @@
 package client;
 
-import java.awt.BorderLayout;
 /*
  * ChessMenu
  * Version 1.0
@@ -9,19 +8,24 @@ import java.awt.BorderLayout;
  * Description: Launches the application, displays a menu
  */
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
+import java.awt.Image;
+import java.awt.BorderLayout;
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.JButton;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.border.EmptyBorder;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 class ChessMenu extends JFrame {
   public static void main(String[] args){
@@ -52,12 +56,17 @@ class ChessMenu extends JFrame {
     MyKeyListener keyListener = new MyKeyListener();
     this.addKeyListener(keyListener);
     
-    JButton singlePlayerButton = new JButton("Single Player");
+    //JButton singlePlayerButton = new JButton("Single Player");
     JButton localMultiplayerButton = new JButton("Local Multiplayer");
+    localMultiplayerButton.setBackground(Color.BLACK);
+    localMultiplayerButton.setForeground(Color.WHITE);
     JButton onlineMultiplayerButton = new JButton("Online Multiplayer");
+    onlineMultiplayerButton.setBackground(Color.BLACK);
+    onlineMultiplayerButton.setForeground(Color.WHITE);
+    onlineMultiplayerButton.addActionListener(new OnlineMultiplayerButtonListener());
     
     JPanel bottomPanel = new JPanel();
-    bottomPanel.add(singlePlayerButton);
+    //bottomPanel.add(singlePlayerButton);
     bottomPanel.add(localMultiplayerButton);
     bottomPanel.add(onlineMultiplayerButton);
     //add the main panel to the frame
@@ -101,10 +110,17 @@ class ChessMenu extends JFrame {
           System.exit(0);
       } else {
         thisFrame.dispose();
-        new MenuFrame(); 
       }    
     }
     
   }
+  
+  //INNER CLASS - changes background to ocean
+ class OnlineMultiplayerButtonListener implements ActionListener {
+   public void actionPerformed(ActionEvent event){
+     //new ChessClient();
+     thisFrame.dispose();
+   }
+ }
   
 }
