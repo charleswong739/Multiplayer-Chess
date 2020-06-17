@@ -1,11 +1,6 @@
-package client;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-
+import java.io.*;
+import java.net.*;
+import java.util.*;
 class NetClient {
     
     final String LOCAL_HOST = "127.0.0.1";
@@ -15,10 +10,7 @@ class NetClient {
     PrintWriter output;       
     boolean running = true;   
     String team;
-     public static void main (String[] args) { 
-        NetClient client = new NetClient();
-        client.go();
-    }
+    
       public void go() { 
            
     // call a method that connects to the server 
