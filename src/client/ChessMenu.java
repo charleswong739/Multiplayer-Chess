@@ -1,3 +1,6 @@
+package client;
+
+import java.awt.BorderLayout;
 /*
  * ChessMenu
  * Version 1.0
@@ -6,22 +9,19 @@
  * Description: Launches the application, displays a menu
  */
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.BorderLayout;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
 import java.awt.Font;
-import javax.swing.JButton;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.ImageIcon;
-import javax.swing.border.EmptyBorder;
-
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 class ChessMenu extends JFrame {
   public static void main(String[] args){

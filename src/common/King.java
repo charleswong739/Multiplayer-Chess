@@ -10,9 +10,18 @@ import client.ClientBoard;
  *
  */
 public class King extends Piece {
+	
+	private boolean canCastle;
 
 	public King(Team t, Position pos) {
 		super("king", 0, t, pos);
+		
+		canCastle = true;
+	}
+	
+	public void setPos(Position p) {
+		position = p;
+		canCastle = false;
 	}
 
 	@Override
@@ -89,8 +98,18 @@ public class King extends Piece {
 			}
 		}
 		
+		if (canCastle && !inCheck(board.getBoard())) {
+			if (chessBoard[7][position.rank] != null && (chessBoard[7][position.rank] instanceof Rook)) {
+				Rook r = (Rook) chessBoard[7][position.rank];
+				if (r.getCastleStatus()) {
+					if (chessBoard[6][position.rank] == null && chessBoard[5][position.rank] == null) {
+						
+					}
+				}
+			}
+		}
 		
-		return null;
+		return list.toArray(new Position[list.size()]);
 	}
 
 	/**

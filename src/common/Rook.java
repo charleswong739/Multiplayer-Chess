@@ -10,9 +10,22 @@ import client.ClientBoard;
  *
  */
 public class Rook extends Piece {
+	
+	private boolean canCastle;
 
 	public Rook(Team t, Position p) {
 		super ("rook", 5, t, p);
+		
+		canCastle = true;
+	}
+	
+	public void setPos(Position p) {
+		position = p;
+		canCastle = false;
+	}
+	
+	public boolean getCastleStatus() {
+		return canCastle;
 	}
 	
 	@Override
