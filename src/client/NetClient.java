@@ -62,6 +62,7 @@ class NetClient extends Thread {
 				}
 				
 				writer.write("READY");
+				writer.flush();
 				match = true;
 			} catch (IOException e) {
 				System.out.println("Could not join game");
@@ -121,6 +122,7 @@ class NetClient extends Thread {
 	synchronized public void write(String s) {
 		try {
 			writer.write(s);
+			writer.flush();
 		} catch (IOException e) {
 			System.out.println("Write failed");
 			e.printStackTrace();
