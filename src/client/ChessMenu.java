@@ -89,7 +89,7 @@ class ChessMenu extends JFrame {
       g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
       g.setColor(Color.black);
       try {
-        BufferedImage pic = ImageIO.read(new File( "Pictures/ChessBackground.png" ));  //draws image and title
+        BufferedImage pic = ImageIO.read(new File( "sprites/ChessBackground.png" ));  //draws image and title
         g.drawImage(pic,0,0,null); 
       } catch(IOException e){};
       
