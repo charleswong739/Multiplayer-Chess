@@ -179,6 +179,68 @@ public class ClientBoard extends Board{
  public Position getSelectedPosition() {
   return selected.getPos();
  }
- 
+ public Team getOrientation() {
+     return orientation;
+ }
+ public boolean checkmate() {
+     King k;
+     if (this.orientation == Team.WHITE){
+         k = getWhiteKing();
+     } else{
+         k = getBlackKing();
+     }
+     if(!k.inCheck(chessBoard)) {
+         return false;
+     }
+     boolean noMove = true;
+     for(int file = 0; file<7; file++) {
+         for(int rank = 0; rank<7; rank++) {
+             if(chessBoard[file][rank] != null) { //If a piece is there
+                 if(chessBoard[file][rank].getTeam() == this.orientation) { //If that piece is on the same team as the current player
+                     Piece curPiece = chessBoard[file][rank];
+                     Position[]potentialMoves = curPiece.possibleMoves(this);
+                     if(potentialMoves != null) {
+                         noMove = false;
+                         break;
+                     }
+                 }
+             }
+         }
+         if(!noMove) {
+             break;
+         }
+     }
+     return noMove;
+}
+ public boolean  stalemate() {
+     King k;
+     if (this.orientation == Team.WHITE){
+         k = getWhiteKing();
+     } else{
+         k = getBlackKing();
+     }
+     if(k.inCheck(chessBoard)) {
+         return false;
+     }
+     boolean noMove = true;
+     for(int file = 0; file<7; file++) {
+         for(int rank = 0; rank<7; rank++) {
+             if(chessBoard[file][rank] != null) { //If a piece is there
+                 if(chessBoard[file][rank].getTeam() == this.orientation) { //If that piece is on the same team as the current player
+                     Piece curPiece = chessBoard[file][rank];
+                     Position[]potentialMoves = curPiece.possibleMoves(this);
+                     if(potentialMoves != null) {
+                         noMove = false;
+                         break;
+                     }
+                 }
+             }
+         }
+         if(!noMove) {
+             break;
+         }
+     }
+     return noMove;
+ }
 // public boolean simulateCastle ()
 }
