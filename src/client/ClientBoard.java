@@ -104,20 +104,27 @@ public class ClientBoard extends Board{
 	 * @return true if the move is valid and made, false otherwise
 	 */
 	public boolean makeMove(Position tar) {
-		
-		for (int i = 0; i < possibleMoves.length; i++) {
-			if (possibleMoves[i].equals(tar)) {
-				chessBoard[tar.file][tar.rank] = selected;
-				chessBoard[selected.getPos().file][selected.getPos().rank] = null;
-				selected.setPos(tar);
-				
-				selected = null;
-				possibleMoves = null;
-				return true;
+
+		if (selected != null && possibleMoves != null) {
+			for (int i = 0; i < possibleMoves.length; i++) {
+				if (possibleMoves[i].equals(tar)) {
+					chessBoard[tar.file][tar.rank] = selected;
+					chessBoard[selected.getPos().file][selected.getPos().rank] = null;
+					selected.setPos(tar);
+
+					selected = null;
+					possibleMoves = null;
+					return true;
+				}
 			}
 		}
-		
+
 		return false;
+	}
+	
+	public void opponentMove(String s) {
+		chessBoard[s.charAt(9) - 48][s.charAt(11) - 48] = chessBoard[s.charAt(5) - 48][s.charAt(7) - 48];
+		chessBoard[s.charAt(5) - 48][s.charAt(7) - 48] = null;
 	}
 	
 	/**
@@ -150,6 +157,10 @@ public class ClientBoard extends Board{
 		chessBoard[tar.file][tar.rank] = temp; 
 		
 		return !b;
+	}
+	
+	public Position getSelectedPosition() {
+		return selected.getPos();
 	}
 	
 //	public boolean simulateCastle ()

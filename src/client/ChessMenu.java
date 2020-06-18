@@ -58,11 +58,11 @@ class ChessMenu extends JFrame {
     
     //JButton singlePlayerButton = new JButton("Single Player");
     JButton localMultiplayerButton = new JButton("Local Multiplayer");
-    localMultiplayerButton.setBackground(Color.BLACK);
-    localMultiplayerButton.setForeground(Color.WHITE);
+//    localMultiplayerButton.setBackground(Color.BLACK);
+//    localMultiplayerButton.setForeground(Color.WHITE);
     JButton onlineMultiplayerButton = new JButton("Online Multiplayer");
-    onlineMultiplayerButton.setBackground(Color.BLACK);
-    onlineMultiplayerButton.setForeground(Color.WHITE);
+//    onlineMultiplayerButton.setBackground(Color.BLACK);
+//    onlineMultiplayerButton.setForeground(Color.WHITE);
     onlineMultiplayerButton.addActionListener(new OnlineMultiplayerButtonListener());
     
     JPanel bottomPanel = new JPanel();

@@ -2,21 +2,24 @@ package client;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.Thread.State;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import common.Position;
 import common.Team;
 
 public class ChessClient extends JFrame {
 	
 	ClientBoard cb;
-	NetClient nb;
+	NetClient nc;
+	boolean turn;
 	
 	private ChessPanel panel;
 
@@ -26,8 +29,8 @@ public class ChessClient extends JFrame {
 		// other settings as well, but i've never really found a use for them
 		super("Chess");
 		
-		nb = new NetClient();
-		nb.start();
+		nc = new NetClient();
+		nc.start();
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//		this.setSize(480, 480);
@@ -43,7 +46,7 @@ public class ChessClient extends JFrame {
 		this.setVisible(true);
 	}
 
-	private class ChessPanel extends JPanel {
+	private class ChessPanel extends JPanel implements MouseListener {
 		
 		BufferedImage connecting;
 		BufferedImage searching;
@@ -64,23 +67,74 @@ public class ChessClient extends JFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			
-			if (!nb.status()) {
+			if (!nc.status()) {
 				g.drawImage(connecting, 0, 0, null);
 			} else if (cb == null) {
 				g.drawImage(searching, 0, 0, null);
 				
-				if (nb.poll()) {
-					String s = nb.read();
+				if (nc.poll()) {
+					String s = nc.read();
 					
-					if (s.equals("WHITE"))
+					if (s.equals("WHITE")) {
 						cb = new ClientBoard(Team.WHITE);
-					else
+						turn = true;
+					} else {
 						cb = new ClientBoard(Team.BLACK);
+						turn = false;
+					}
 				}
 			} else
 				cb.draw(g, 0, 0);
+			
+			if (!turn) {
+				if (nc.poll()) {
+					String s = nc.read();
+					
+					if (s.substring(0, 4).equals("MOVE")) {
+						cb.opponentMove(s);
+					}
+				}
+			}
 
 			repaint(); // this is needed to refresh the panel every frame
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (turn) {
+				Position p = new Position(e.getX()/60, e.getY()/60);
+
+				if (!cb.makeMove(p)) {
+					cb.selectPiece(p);
+				} else {
+					nc.write("MOVE " + cb.getSelectedPosition().file + " " + cb.getSelectedPosition().rank + " " + p.file + " " + p.rank);
+					turn = false;
+				}
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 }

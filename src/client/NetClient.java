@@ -9,19 +9,19 @@ import java.net.Socket;
 
 class NetClient extends Thread {
 
-	final String HOST = "70.27.133.217";
-	final int PORT = 5000;
+	private final String HOST = "70.27.133.217";
+	private final int PORT = 5000;
 	
-	Socket socket;      
-	BufferedReader reader;     
-	BufferedWriter writer;
+	private Socket socket;      
+	private BufferedReader reader;     
+	private BufferedWriter writer;
 	
 	// flags
-	boolean connected;
-	boolean match;
-	boolean read;
+	private boolean connected;
+	private boolean match;
+	private boolean read;
 	
-	String message;
+	private String message;
 
 	public NetClient() {
 		connected = false;
@@ -69,12 +69,19 @@ class NetClient extends Thread {
 			}
 		}
 		
-//		while (match) {
-//			while (read) {
-//				
-//				read = false;
-//			}
-//		}
+		while (match) {
+			while (read) {
+				try {
+					if (reader.ready()) {
+						message = reader.readLine();
+					}
+					read = false;
+				} catch (IOException e) {
+					System.out.println("Read cycle failed");
+					e.printStackTrace();
+				}
+			}
+		}
 		
 		try {
 			writer.close();
@@ -108,6 +115,15 @@ class NetClient extends Thread {
 		String s = message;
 		message = null;
 		return s;
+	}
+	
+	synchronized public void write(String s) {
+		try {
+			writer.write(s);
+		} catch (IOException e) {
+			System.out.println("Write failed");
+			e.printStackTrace();
+		}
 	}
 
 	/*
