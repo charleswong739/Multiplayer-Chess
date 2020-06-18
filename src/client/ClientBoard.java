@@ -152,5 +152,5 @@ public class ClientBoard extends Board{
 		return !b;
 	}
 	
-	public boolean simulateCastle ()
+//	public boolean simulateCastle ()
 }

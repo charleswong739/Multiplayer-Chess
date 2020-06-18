@@ -39,6 +39,7 @@ public abstract class Piece {
 		try {
 			sprite = ImageIO.read(new File(filePath));
 		} catch (IOException e) {
+			System.out.println("Could not find image: " + filePath);
 			e.printStackTrace();
 		}
 	}

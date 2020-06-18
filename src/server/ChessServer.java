@@ -84,8 +84,8 @@ public class ChessServer {
             }catch(IOException e) {
                 e.printStackTrace();
             }
-            outputA.println("Server Ready");
-            outputB.println("Server Ready");
+            outputA.println("SRW");
+            outputB.println("SRB");
             outputA.flush();                                 //flush the output stream to make sure the message
             outputB.flush();
             //getting message

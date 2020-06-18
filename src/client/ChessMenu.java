@@ -118,8 +118,7 @@ class ChessMenu extends JFrame {
   //INNER CLASS - changes background to ocean
  class OnlineMultiplayerButtonListener implements ActionListener {
    public void actionPerformed(ActionEvent event){
-     //new ChessClient();
-     thisFrame.dispose();
+     new ChessClient();
    }
  }
   
