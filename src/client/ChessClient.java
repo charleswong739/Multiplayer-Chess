@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.Thread.State;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -24,6 +25,10 @@ public class ChessClient extends JFrame {
 		// set up frame (all swing component's methods are inherited, so there are a bunch of
 		// other settings as well, but i've never really found a use for them
 		super("Chess");
+		
+		nb = new NetClient();
+		nb.start();
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//		this.setSize(480, 480);
 		this.setResizable(false);
@@ -36,19 +41,19 @@ public class ChessClient extends JFrame {
 		this.pack();
 		this.requestFocusInWindow();
 		this.setVisible(true);
-		
-		nb = new NetClient();
 	}
 
 	private class ChessPanel extends JPanel {
 		
 		BufferedImage connecting;
+		BufferedImage searching;
 
 		ChessPanel() {
 			try {
-				connecting = ImageIO.read(new File("sprites/bg"));
+				connecting = ImageIO.read(new File("sprites/connecting.png"));
+				searching = ImageIO.read(new File("sprites/searching.png"));
 			} catch (IOException e) {
-				System.out.println("Connecting image not found");
+				System.out.println("Connecting images not found");
 				e.printStackTrace();
 			}
 
@@ -59,8 +64,10 @@ public class ChessClient extends JFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			
-			if (cb == null) {
+			if (!nb.status()) {
 				g.drawImage(connecting, 0, 0, null);
+			} else if (cb == null) {
+				g.drawImage(searching, 0, 0, null);
 				
 				if (nb.poll()) {
 					String s = nb.read();

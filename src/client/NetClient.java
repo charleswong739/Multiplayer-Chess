@@ -17,19 +17,21 @@ class NetClient extends Thread {
 	BufferedWriter writer;
 	
 	// flags
+	boolean connected;
 	boolean match;
 	boolean read;
 	
 	String message;
-	
-	/*public static void main (String [] arg) {
-		NetClient n = new NetClient();
-	}*/
 
 	public NetClient() {
+		connected = false;
 		match = false;
 		read = false;
+	}
+
+	public void run() {
 		
+		// Connect
 		try {
 			System.out.println("Attempting to connect...");
 			socket = new Socket(HOST, PORT);
@@ -46,9 +48,6 @@ class NetClient extends Thread {
 			System.out.println("Could not create I/O streams");
 			e.printStackTrace();
 		}
-	}
-
-	public void run() {
 		
 		// Check for available match
 		while (!match) {
@@ -84,6 +83,10 @@ class NetClient extends Thread {
 			System.out.println("Could not close streams");
 			e.printStackTrace();
 		}
+	}
+	
+	synchronized public boolean status() {
+		return connected;
 	}
 	
 	synchronized public void disconnect() {
