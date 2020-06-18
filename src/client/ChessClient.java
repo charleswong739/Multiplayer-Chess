@@ -108,6 +108,7 @@ public class ChessClient extends JFrame {
 					cb.selectPiece(p);
 				} else {
 					nc.write("MOVE " + cb.getSelectedPosition().file + " " + cb.getSelectedPosition().rank + " " + p.file + " " + p.rank);
+					nc.recieve();
 					turn = false;
 				}
 			}

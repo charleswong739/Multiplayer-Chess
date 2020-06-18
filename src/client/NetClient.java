@@ -114,6 +114,7 @@ class NetClient extends Thread {
 	synchronized public String read() {
 		String s = message;
 		message = null;
+		read = false;
 		return s;
 	}
 	
