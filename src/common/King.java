@@ -105,7 +105,7 @@ public class King extends Piece {
             if (chessBoard[7][position.rank] != null && (chessBoard[7][position.rank] instanceof Rook)) {
                 Rook r = (Rook) chessBoard[7][position.rank];
                 if (r.getCastleStatus()) {
-                    if (chessBoard[6][position.rank] == null && chessBoard[5][position.rank] == null && chessBoard[4][position.rank] == null) {
+                    if (chessBoard[6][position.rank] == null && chessBoard[5][position.rank] == null) {
                         target = new Position(6,position.rank);
                         if(board.simulateMove(position,target)) {
                             list.add(target);
@@ -117,7 +117,7 @@ public class King extends Piece {
               if (chessBoard[0][position.rank] != null && (chessBoard[0][position.rank] instanceof Rook)) {
                 Rook r = (Rook) chessBoard[0][position.rank];
                 if (r.getCastleStatus()) {
-                    if (chessBoard[1][position.rank] == null && chessBoard[2][position.rank] == null) {
+                    if (chessBoard[1][position.rank] == null && chessBoard[2][position.rank] == null && chessBoard[3][position.rank] == null) {
                         target = new Position(2,position.rank);
                         if(board.simulateMove(position,target)) {
                             list.add(target);
