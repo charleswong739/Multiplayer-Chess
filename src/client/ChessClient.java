@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +17,7 @@ import javax.swing.JPanel;
 import common.Position;
 import common.Team;
 
-public class ChessClient extends JFrame {
+public class ChessClient extends JFrame implements WindowListener {
 	
 	ClientBoard cb;
 	NetClient nc;
@@ -32,13 +34,14 @@ public class ChessClient extends JFrame {
 		nc = new NetClient();
 		nc.start();
 		
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		//		this.setSize(480, 480);
 		this.setResizable(false);
 
 		// instantiate the panel and add to current component
 		panel = new ChessPanel();
 		this.add(panel);
+		this.addWindowListener(this);
 
 		// more setup
 		this.pack();
@@ -71,10 +74,8 @@ public class ChessClient extends JFrame {
 				g.drawImage(connecting, 0, 0, null);
 			} else if (cb == null) {
 				g.drawImage(searching, 0, 0, null);
-				
 				if (nc.poll()) {
 					String s = nc.read();
-					
 					if (s.equals("WHITE")) {
 						cb = new ClientBoard(Team.WHITE);
 						turn = true;
@@ -137,5 +138,47 @@ public class ChessClient extends JFrame {
 			// TODO Auto-generated method stub
 			
 		}
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		nc.disconnect();
+		this.dispose();
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

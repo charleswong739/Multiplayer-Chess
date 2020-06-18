@@ -51,26 +51,30 @@ class NetClient extends Thread {
 		}
 		
 		// Check for available match
-		while (!match) {
+		while (!match && connected) {
 			try {
 				if (reader.ready()) {
 					if (reader.readLine().equals("SRW")) {
 						message = "WHITE";
+						
+						writer.write("READY");
+						writer.flush();
+						match = true;
 					} else {
 						message = "BLACK";
+						
+						writer.write("READY");
+						writer.flush();
+						match = true;
 					}
 				}
-				
-				writer.write("READY");
-				writer.flush();
-				match = true;
 			} catch (IOException e) {
 				System.out.println("Could not join game");
 				e.printStackTrace();
 			}
 		}
-		
-		while (match) {
+
+		while (match && connected) {
 			while (read) {
 				try {
 					if (reader.ready()) {
@@ -88,6 +92,7 @@ class NetClient extends Thread {
 			writer.close();
 			reader.close();
 			socket.close();
+			System.out.println("Disconnected");
 		} catch (IOException e) {
 			System.out.println("Could not close streams");
 			e.printStackTrace();
@@ -99,7 +104,7 @@ class NetClient extends Thread {
 	}
 	
 	synchronized public void disconnect() {
-		match = false;
+		connected = false;
 	}
 	
 	synchronized public void recieve() {
