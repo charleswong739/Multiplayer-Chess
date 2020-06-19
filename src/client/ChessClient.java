@@ -96,6 +96,8 @@ public class ChessClient extends JFrame implements WindowListener {
 					
 					if (s.substring(0, 4).equals("MOVE")) {
 						cb.opponentMove(s);
+						
+					turn = true;
 					}
 				}
 			}
@@ -104,13 +106,13 @@ public class ChessClient extends JFrame implements WindowListener {
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mousePressed(MouseEvent e) {
 			if (turn) {
 				Position p;
 				if (cb.getOrientation() == Team.WHITE) {
 					p = new Position(e.getX()/60, 7 - e.getY()/60);
 				} else {
-					p = new Position(e.getX()/60, e.getY()/60);
+					p = new Position(7 - e.getX()/60, e.getY()/60);
 				}
 				
 				Position sp = new Position(0, 0);
@@ -129,7 +131,7 @@ public class ChessClient extends JFrame implements WindowListener {
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) {
 //			System.out.println("Press");
 			
 		}

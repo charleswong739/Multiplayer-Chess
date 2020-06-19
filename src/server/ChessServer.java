@@ -111,9 +111,14 @@ public class ChessServer {
                         System.out.println("Game started");
                     }
                 }
+                
+                currIn = inputA;
+                currOut = outputB;
+                
                 while (gameStart){
                     try {
                         String message = currIn.readLine();
+                        System.out.println("Message recieved: " + message);
                         currOut.println(message);
                         currOut.flush();
                         switchStreams();

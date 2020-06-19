@@ -54,27 +54,21 @@ class NetClient extends Thread {
 		while (!match && connected) {
 			try {
 				if (reader.ready()) {
-					System.out.println("Reader ready");
 					String s = reader.readLine();
 					if (s.equals("SRW")) {
 						message = "WHITE";
 						
-						writer.write("READY");
-						System.out.println("White ready");
+						writer.write("READY\n");
 						writer.flush();
 						match = true;
 					} else if (s.equals("SRB")){
-						System.out.println("Recieved black message");
 						message = "BLACK";
 						
-						writer.write("READY");
-						System.out.println("Black ready");
+						writer.write("READY\n");
 						writer.flush();
 						match = true;
 						read = true;
 					}
-					
-					System.out.println(message);
 				}
 			} catch (IOException e) {
 				System.out.println("Could not join game");
@@ -86,18 +80,32 @@ class NetClient extends Thread {
 			while (read && connected) {
 				try {
 					if (reader.ready()) {
+						System.out.println("Reader ready");
 						message = reader.readLine();
+						read = false;
+						System.out.println("Message: " + message);
 					}
-					read = false;
-					System.out.println("Message: " + message);
 				} catch (IOException e) {
 					System.out.println("Read cycle failed");
 					e.printStackTrace();
 				}
-				System.out.println("Reading");
+				
+				try {
+					Thread.sleep(500);
+				} catch (Exception e) {
+					System.out.println("Sleep interrupted");
+					e.printStackTrace();
+				}
+			}
+			
+			try {
+				Thread.sleep(500);
+			} catch (Exception e) {
+				System.out.println("Sleep interrupted");
+				e.printStackTrace();
 			}
 		}
-		System.out.println("End of loop");
+
 		try {
 			writer.close();
 			reader.close();
@@ -114,11 +122,12 @@ class NetClient extends Thread {
 	}
 	
 	synchronized public void disconnect() {
-		System.out.println("l");
+		System.out.println("Attempting to disconnect...");
 		connected = false;
 	}
 	
 	synchronized public void recieve() {
+		System.out.println("Recieving");
 		read = true;
 	}
 	
@@ -139,8 +148,9 @@ class NetClient extends Thread {
 	
 	synchronized public void write(String s) {
 		try {
-			writer.write(s);
+			writer.write(s + "\n");
 			writer.flush();
+			System.out.println("Message sent: " + s);
 		} catch (IOException e) {
 			System.out.println("Write failed");
 			e.printStackTrace();
