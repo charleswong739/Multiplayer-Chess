@@ -17,7 +17,7 @@ public class ChessServer {
 
 
     //Constants
-    final int PORT = 5000;
+    final int PORT = 48209;
     final int MAXPLAYER = 10;
 
     ServerSocket serverSocket;

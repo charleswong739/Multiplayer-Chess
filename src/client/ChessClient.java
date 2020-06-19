@@ -9,6 +9,7 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.Thread.State;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -64,6 +65,7 @@ public class ChessClient extends JFrame implements WindowListener {
 			}
 
 			this.setPreferredSize(new Dimension(480, 480));
+			this.addMouseListener(this);
 		}
 
 		//draw stuff in here
@@ -81,6 +83,7 @@ public class ChessClient extends JFrame implements WindowListener {
 						turn = true;
 					} else {
 						cb = new ClientBoard(Team.BLACK);
+						nc.recieve();
 						turn = false;
 					}
 				}
@@ -103,21 +106,31 @@ public class ChessClient extends JFrame implements WindowListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (turn) {
-				Position p = new Position(e.getX()/60, e.getY()/60);
-
+				Position p;
+				if (cb.getOrientation() == Team.WHITE) {
+					p = new Position(e.getX()/60, 7 - e.getY()/60);
+				} else {
+					p = new Position(e.getX()/60, e.getY()/60);
+				}
+				
+				Position sp = new Position(0, 0);
+				if (cb.getSelectedPosition() != null)
+					sp = cb.getSelectedPosition();
+				
 				if (!cb.makeMove(p)) {
 					cb.selectPiece(p);
 				} else {
-					nc.write("MOVE " + cb.getSelectedPosition().file + " " + cb.getSelectedPosition().rank + " " + p.file + " " + p.rank);
+					nc.write("MOVE " + sp.file + " " + sp.rank + " " + p.file + " " + p.rank);
 					nc.recieve();
 					turn = false;
+					System.out.println("Turn: " + turn);
 				}
 			}
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
+//			System.out.println("Press");
 			
 		}
 

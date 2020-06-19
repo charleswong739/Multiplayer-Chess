@@ -9,8 +9,8 @@ import java.net.Socket;
 
 class NetClient extends Thread {
 
-	private final String HOST = "70.27.133.217";
-	private final int PORT = 5000;
+	private final String HOST = "99.254.124.185";
+	private final int PORT = 48209;
 	
 	private Socket socket;      
 	private BufferedReader reader;     
@@ -54,19 +54,27 @@ class NetClient extends Thread {
 		while (!match && connected) {
 			try {
 				if (reader.ready()) {
-					if (reader.readLine().equals("SRW")) {
+					System.out.println("Reader ready");
+					String s = reader.readLine();
+					if (s.equals("SRW")) {
 						message = "WHITE";
 						
 						writer.write("READY");
+						System.out.println("White ready");
 						writer.flush();
 						match = true;
-					} else {
+					} else if (s.equals("SRB")){
+						System.out.println("Recieved black message");
 						message = "BLACK";
 						
 						writer.write("READY");
+						System.out.println("Black ready");
 						writer.flush();
 						match = true;
+						read = true;
 					}
+					
+					System.out.println(message);
 				}
 			} catch (IOException e) {
 				System.out.println("Could not join game");
@@ -75,19 +83,21 @@ class NetClient extends Thread {
 		}
 
 		while (match && connected) {
-			while (read) {
+			while (read && connected) {
 				try {
 					if (reader.ready()) {
 						message = reader.readLine();
 					}
 					read = false;
+					System.out.println("Message: " + message);
 				} catch (IOException e) {
 					System.out.println("Read cycle failed");
 					e.printStackTrace();
 				}
+				System.out.println("Reading");
 			}
 		}
-		
+		System.out.println("End of loop");
 		try {
 			writer.close();
 			reader.close();
@@ -104,6 +114,7 @@ class NetClient extends Thread {
 	}
 	
 	synchronized public void disconnect() {
+		System.out.println("l");
 		connected = false;
 	}
 	
@@ -120,7 +131,9 @@ class NetClient extends Thread {
 	synchronized public String read() {
 		String s = message;
 		message = null;
+		System.out.println("Message read: " + s + "\nCurrent message: " + message);
 		read = false;
+		
 		return s;
 	}
 	
@@ -133,54 +146,4 @@ class NetClient extends Thread {
 			e.printStackTrace();
 		}
 	}
-
-	/*
-	public void readMessagesFromServer() { 
-		boolean firstTurn = true;
-		while(running) {  // loop unit a message is received
-			try {
-
-				if (input.ready()) { //check for an incoming messge
-					String msg;          
-					msg = input.readLine(); //read the message
-					if(msg.equals("Server Ready")) {
-						output.println("READY");
-						output.flush();
-					}
-					else {
-						if(firstTurn) {
-							if(msg.equals("First")) {
-								team="White";
-								msg = "";
-							} else {
-								team="Black";
-							}
-							firstTurn = false;
-						} 
-
-						//First decode string to board
-						//Then update board array
-						//Wait for move
-						//Encode new board into string
-						//Send to server
-						output.println(msg+" Board"+team);
-						output.flush();
-
-					}
-				}
-
-			}catch (IOException e) { 
-				System.out.println("Failed to receive msg from the server");
-				e.printStackTrace();
-			}
-		}
-		try {  //after leaving the main loop we need to close all the sockets
-			input.close();
-			output.close();
-			mySocket.close();
-		}catch (Exception e) { 
-			System.out.println("Failed to close socket");
-		}
-
-	}*/
 }
