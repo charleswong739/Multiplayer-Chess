@@ -7,6 +7,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+/**
+ * 
+ * @author Charles Wong
+ *
+ */
 class NetClient extends Thread {
 
 	private final String HOST = "99.254.124.185";

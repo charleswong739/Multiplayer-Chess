@@ -15,8 +15,7 @@ import common.Team;
 
 /**
  * 
- * @author Charles Wong
- * @author Andy Li
+ * @author Charles Wong, Andy Li
  *
  */
 public class ClientBoard extends Board {
@@ -104,7 +103,7 @@ public class ClientBoard extends Board {
 	 * @param tar The target position to move to
 	 * @return true if the move is valid and made, false otherwise
 	 */
-	public boolean makeMove(Position tar) {
+	public boolean makeMove(Position tar, NetClient nc) {
 
 		if (selected != null && possibleMoves != null) {
 			for (int i = 0; i < possibleMoves.length; i++) {
@@ -113,18 +112,44 @@ public class ClientBoard extends Board {
 						// The king must be castling
 						if (tar.file > selected.getPos().file) {
 							// Right castle move rook
-							Piece rook = chessBoard[7][tar.rank];
-							chessBoard[5][tar.rank] = rook;
+							chessBoard[5][tar.rank] = chessBoard[7][tar.rank];
 							chessBoard[7][tar.rank] = null;
-							rook.setPos(new Position(5, tar.rank));
+							chessBoard[5][tar.rank].setPos(new Position(5, tar.rank));
+							
+							chessBoard[tar.file][tar.rank] = selected;
+							chessBoard[selected.getPos().file][selected.getPos().rank] = null;
+							selected.setPos(tar);
+
+							selected = null;
+							possibleMoves = null;
+							
+							nc.write("CAST K");
+							nc.recieve();
+							
+							return true;
 						} else {
 							// Left castle move rook
-							Piece rook = chessBoard[0][tar.rank];
-							chessBoard[3][tar.rank] = rook;
+							chessBoard[3][tar.rank] = chessBoard[0][tar.rank];
 							chessBoard[0][tar.rank] = null;
-							rook.setPos(new Position(3, tar.rank));
+							chessBoard[3][tar.rank].setPos(new Position(3, tar.rank));
+							
+							chessBoard[tar.file][tar.rank] = selected;
+							chessBoard[selected.getPos().file][selected.getPos().rank] = null;
+							selected.setPos(tar);
+
+							selected = null;
+							possibleMoves = null;
+							
+							nc.write("CAST Q");
+							nc.recieve();
+							
+							return true;
 						}
 					}
+					
+					nc.write("MOVE " + selected.getPos().file + " " + selected.getPos().rank + " " + tar.file + " " + tar.rank);
+					nc.recieve();
+					
 					chessBoard[tar.file][tar.rank] = selected;
 					chessBoard[selected.getPos().file][selected.getPos().rank] = null;
 					selected.setPos(tar);
@@ -140,8 +165,44 @@ public class ClientBoard extends Board {
 	}
 
 	public void opponentMove(String s) {
-		chessBoard[s.charAt(9) - 48][s.charAt(11) - 48] = chessBoard[s.charAt(5) - 48][s.charAt(7) - 48];
-		chessBoard[s.charAt(5) - 48][s.charAt(7) - 48] = null;
+		String command = s.substring(0, 4);
+		
+		if (command.equals("MOVE")) {
+			chessBoard[s.charAt(9) - 48][s.charAt(11) - 48] = chessBoard[s.charAt(5) - 48][s.charAt(7) - 48];
+			chessBoard[s.charAt(5) - 48][s.charAt(7) - 48] = null;
+		} else if (command.equals("CAST")) {
+			if (s.charAt(5) == 'K') {
+				if (orientation == Team.WHITE) {
+					// Move king
+					chessBoard[6][7] = chessBoard[4][7];
+					chessBoard[4][7] = null;
+					//Move rook
+					chessBoard[5][7] = chessBoard[7][7];
+					chessBoard[7][7] = null;
+				} else {
+					chessBoard[6][0] = chessBoard[4][0];
+					chessBoard[4][0] = null;
+					//Move rook
+					chessBoard[5][0] = chessBoard[7][0];
+					chessBoard[7][0] = null;
+				}
+			} else {
+				if (orientation == Team.WHITE) {
+					// Move king
+					chessBoard[2][7] = chessBoard[4][7];
+					chessBoard[4][7] = null;
+					//Move rook
+					chessBoard[3][7] = chessBoard[0][7];
+					chessBoard[0][7] = null;
+				} else {
+					chessBoard[2][0] = chessBoard[4][0];
+					chessBoard[4][0] = null;
+					//Move rook
+					chessBoard[3][0] = chessBoard[0][0];
+					chessBoard[0][0] = null;
+				}
+			}
+		}
 	}
 
 	/**
@@ -167,13 +228,18 @@ public class ClientBoard extends Board {
 			k = getBlackKing();
 
 		Piece temp = chessBoard[tar.file][tar.rank];
+		chessBoard[src.file][src.rank].setPos(tar);
 		chessBoard[tar.file][tar.rank] = chessBoard[src.file][src.rank];
 		chessBoard[src.file][src.rank] = null;
 
 		boolean b = k.inCheck(chessBoard);
+		System.out.println(k.getPos());
+		if (src.equals(new Position(4, 0)))
+			System.out.println("Simulate " + src.toString() + " to " + tar.toString() + ": " + b);
 
 		chessBoard[src.file][src.rank] = chessBoard[tar.file][tar.rank];
 		chessBoard[tar.file][tar.rank] = temp;
+		chessBoard[src.file][src.rank].setPos(src);
 
 		return !b;
 	}
@@ -198,7 +264,7 @@ public class ClientBoard extends Board {
 		if (!k.inCheck(chessBoard)) {
 			return false;
 		}
-		boolean noMove = true;
+		
 		for (int file = 0; file < 7; file++) {
 			for (int rank = 0; rank < 7; rank++) {
 				if (chessBoard[file][rank] != null) { // If a piece is there
@@ -207,17 +273,13 @@ public class ClientBoard extends Board {
 						Piece curPiece = chessBoard[file][rank];
 						Position[] potentialMoves = curPiece.possibleMoves(this);
 						if (potentialMoves != null) {
-							noMove = false;
-							break;
+							return false;
 						}
 					}
 				}
 			}
-			if (!noMove) {
-				break;
-			}
 		}
-		return noMove;
+		return true;
 	}
 
 	public boolean stalemate() {
@@ -230,7 +292,6 @@ public class ClientBoard extends Board {
 		if (k.inCheck(chessBoard)) {
 			return false;
 		}
-		boolean noMove = true;
 		for (int file = 0; file < 7; file++) {
 			for (int rank = 0; rank < 7; rank++) {
 				if (chessBoard[file][rank] != null) { // If a piece is there
@@ -239,16 +300,12 @@ public class ClientBoard extends Board {
 						Piece curPiece = chessBoard[file][rank];
 						Position[] potentialMoves = curPiece.possibleMoves(this);
 						if (potentialMoves != null) {
-							noMove = false;
-							break;
+							return false;
 						}
 					}
 				}
 			}
-			if (!noMove) {
-				break;
-			}
 		}
-		return noMove;
+		return true;
 	}
 }

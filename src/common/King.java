@@ -6,8 +6,7 @@ import client.ClientBoard;
 
 /**
  * 
- * @author Charles Wong
- * @author Andy Li
+ * @author Charles Wong, Andy Li
  *
  */
 public class King extends Piece {
@@ -35,7 +34,8 @@ public class King extends Piece {
             if (position.file < 7) {
                 target = new Position(position.file, position.rank+1); // up
                 if (chessBoard[target.file][target.rank] == null || chessBoard[target.file][target.rank].team != team) {
-                    if (board.simulateMove(position, target)) {
+                    System.out.println("reach");
+                	if (board.simulateMove(position, target)) {
                         list.add(target);
                     }
                 }
@@ -43,6 +43,7 @@ public class King extends Piece {
                 target = new Position(position.file+1, position.rank+1); // up right
                 if (chessBoard[target.file][target.rank] == null || chessBoard[target.file][target.rank].team != team) {
                     if (board.simulateMove(position, target)) {
+                    	System.out.println("Adding");
                         list.add(target);
                     }
                 }
@@ -224,8 +225,10 @@ public class King extends Piece {
          if (chessBoard[checker.file+1][checker.rank+1] != null && chessBoard[checker.file+1][checker.rank+1].team == team)
              break;
          if (isPiece(chessBoard, checker.file+1, checker.rank+1, enemy, Bishop.class) 
-                 || isPiece(chessBoard, checker.file+1, checker.rank+1, enemy, Queen.class))
+                 || isPiece(chessBoard, checker.file+1, checker.rank+1, enemy, Queen.class)) {
+        	 System.out.println("inCheck true");
              return true;
+         }
          else {
              checker.file++;
              checker.rank++;

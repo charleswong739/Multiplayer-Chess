@@ -43,7 +43,7 @@ public class Test extends JFrame {
 			cb = new ClientBoard(Team.WHITE);
 			
 			/*------------------------------------------------*/
-			
+			/*
 			cb.selectPiece(new Position(Position.D, 1));
 			cb.makeMove(new Position(Position.D, 3));
 			cb.selectPiece(new Position(Position.D, 0));

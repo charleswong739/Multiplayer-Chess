@@ -72,7 +72,7 @@ public class Pawn extends Piece {
 
 				if (position.file > 0) { // up right
 					target = new Position(position.file-1, position.rank-1);
-					if (chessBoard[target.file][target.rank] != null && chessBoard[target.file][target.rank].team == Team.BLACK) {
+					if (chessBoard[target.file][target.rank] != null && chessBoard[target.file][target.rank].team == Team.WHITE) {
 						if (board.simulateMove(position, target)) {
 							list.add(target);
 						}
@@ -81,7 +81,7 @@ public class Pawn extends Piece {
 
 				if (position.file < 7) { // up left
 					target = new Position(position.file+1, position.rank-1);
-					if (chessBoard[target.file][target.rank] != null && chessBoard[target.file][target.rank].team == Team.BLACK) {
+					if (chessBoard[target.file][target.rank] != null && chessBoard[target.file][target.rank].team == Team.WHITE) {
 						if (board.simulateMove(position, target)) {
 							list.add(target);
 						}

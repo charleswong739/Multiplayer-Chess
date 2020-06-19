@@ -9,7 +9,6 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.Thread.State;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -18,6 +17,11 @@ import javax.swing.JPanel;
 import common.Position;
 import common.Team;
 
+/**
+ * 
+ * @author Charles Wong
+ *
+ */
 public class ChessClient extends JFrame implements WindowListener {
 	
 	ClientBoard cb;
@@ -94,11 +98,10 @@ public class ChessClient extends JFrame implements WindowListener {
 				if (nc.poll()) {
 					String s = nc.read();
 					
-					if (s.substring(0, 4).equals("MOVE")) {
-						cb.opponentMove(s);
+					
+					cb.opponentMove(s);
 						
 					turn = true;
-					}
 				}
 			}
 
@@ -115,17 +118,10 @@ public class ChessClient extends JFrame implements WindowListener {
 					p = new Position(7 - e.getX()/60, e.getY()/60);
 				}
 				
-				Position sp = new Position(0, 0);
-				if (cb.getSelectedPosition() != null)
-					sp = cb.getSelectedPosition();
-				
-				if (!cb.makeMove(p)) {
-					cb.selectPiece(p);
-				} else {
-					nc.write("MOVE " + sp.file + " " + sp.rank + " " + p.file + " " + p.rank);
-					nc.recieve();
+				if (cb.makeMove(p, nc)) {
 					turn = false;
-					System.out.println("Turn: " + turn);
+				} else {
+					cb.selectPiece(p);
 				}
 			}
 		}
