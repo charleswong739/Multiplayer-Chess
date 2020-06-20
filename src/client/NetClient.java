@@ -85,10 +85,9 @@ class NetClient extends Thread {
 			while (read && connected) {
 				try {
 					if (reader.ready()) {
-						System.out.println("Reader ready");
 						message = reader.readLine();
 						read = false;
-						System.out.println("Message: " + message);
+						System.out.println("Message recieved: " + message);
 					}
 				} catch (IOException e) {
 					System.out.println("Read cycle failed");
@@ -132,7 +131,6 @@ class NetClient extends Thread {
 	}
 	
 	synchronized public void recieve() {
-		System.out.println("Recieving");
 		read = true;
 	}
 	
@@ -145,7 +143,7 @@ class NetClient extends Thread {
 	synchronized public String read() {
 		String s = message;
 		message = null;
-		System.out.println("Message read: " + s + "\nCurrent message: " + message);
+		System.out.println("Message read: " + s);
 		read = false;
 		
 		return s;

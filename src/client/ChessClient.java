@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import common.GameState;
 import common.Position;
 import common.Team;
 
@@ -91,17 +92,31 @@ public class ChessClient extends JFrame implements WindowListener {
 						turn = false;
 					}
 				}
-			} else
+			}
+
+			if (cb != null) {
 				cb.draw(g, 0, 0);
-			
-			if (!turn) {
-				if (nc.poll()) {
-					String s = nc.read();
-					
-					
-					cb.opponentMove(s);
+				
+				if (!turn && cb.getState() == GameState.ACTIVE) {
+					if (nc.poll()) {
+						String s = nc.read();
 						
-					turn = true;
+						cb.opponentMove(s);
+						
+						if (s.equals("CHEK") || s.equals("STAL") || s.equals("RESN"))
+							nc.disconnect();
+
+						if (cb.checkmate()) {
+							cb.setState(GameState.CHECKMATE_LOSS);
+							nc.write("CHEK");
+							nc.disconnect();
+						} else if (cb.stalemate()) {
+							cb.setState(GameState.STALEMATE_LOSS);
+							nc.write("STAL");
+							nc.disconnect();
+						} else
+							turn = true;
+					}
 				}
 			}
 

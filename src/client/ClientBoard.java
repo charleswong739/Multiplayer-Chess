@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import common.Board;
+import common.GameState;
 import common.King;
 import common.Piece;
 import common.Position;
@@ -23,20 +24,50 @@ public class ClientBoard extends Board {
 	private BufferedImage bg;
 	private BufferedImage selectbg;
 	private BufferedImage movespoint;
+	private BufferedImage[] endCards;
+	
+	private BufferedImage checkmate_white;
+	private BufferedImage checkmate_black;
+	private BufferedImage stalemate_white;
+	private BufferedImage stalemate_black;
+	private BufferedImage resign_white;
+	private BufferedImage resign_black;
 
 	private Team orientation;
 
 	private Piece selected;
 	private Position[] possibleMoves;
+	
+	private int gameState;
 
 	public ClientBoard(Team o) {
 		super();
 		orientation = o;
+		gameState = GameState.ACTIVE;
+		endCards = new BufferedImage[6];
 
 		try {
 			bg = ImageIO.read(new File("sprites/bg.png"));
 			selectbg = ImageIO.read(new File("sprites/selectbg.png"));
 			movespoint = ImageIO.read(new File("sprites/movespoint.png"));
+			
+			
+			if (orientation == Team.WHITE) {
+				endCards[0] = ImageIO.read(new File("sprites/endcards/checkmate_white_win.png"));
+				endCards[1] = ImageIO.read(new File("sprites/endcards/checkmate_white_loss.png"));
+				endCards[2] = ImageIO.read(new File("sprites/endcards/stalemate_white_win.png"));
+				endCards[3] = ImageIO.read(new File("sprites/endcards/stalemate_white_loss.png"));
+				endCards[4] = ImageIO.read(new File("sprites/endcards/resign_white_win.png"));
+				endCards[5] = ImageIO.read(new File("sprites/endcards/resign_white_loss.png"));
+			} else {
+				endCards[0] = ImageIO.read(new File("sprites/endcards/checkmate_black_win.png"));
+				endCards[1] = ImageIO.read(new File("sprites/endcards/checkmate_black_loss.png"));
+				endCards[2] = ImageIO.read(new File("sprites/endcards/stalemate_black_win.png"));
+				endCards[3] = ImageIO.read(new File("sprites/endcards/stalemate_black_loss.png"));
+				endCards[4] = ImageIO.read(new File("sprites/endcards/resign_black_win.png"));
+				endCards[5] = ImageIO.read(new File("sprites/endcards/resign_black_loss.png"));
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -81,6 +112,9 @@ public class ClientBoard extends Board {
 				}
 			}
 		}
+		
+		if (gameState != GameState.ACTIVE)
+			g.drawImage(endCards[gameState],120, 180, null);
 	}
 
 	/**
@@ -202,6 +236,12 @@ public class ClientBoard extends Board {
 					chessBoard[0][0] = null;
 				}
 			}
+		} else if (command.equals("CHEK")) {
+			gameState = GameState.CHECKMATE_VICTORY;
+		} else if (command.equals("STAL")) {
+			gameState = GameState.STALEMATE_VICTORY;
+		} else if (command.equals("RESN")) {
+			gameState = GameState.RESIGN_VICTORY;
 		}
 	}
 
@@ -233,9 +273,6 @@ public class ClientBoard extends Board {
 		chessBoard[src.file][src.rank] = null;
 
 		boolean b = k.inCheck(chessBoard);
-		System.out.println(k.getPos());
-		if (src.equals(new Position(4, 0)))
-			System.out.println("Simulate " + src.toString() + " to " + tar.toString() + ": " + b);
 
 		chessBoard[src.file][src.rank] = chessBoard[tar.file][tar.rank];
 		chessBoard[tar.file][tar.rank] = temp;
@@ -272,13 +309,15 @@ public class ClientBoard extends Board {
 																				// the current player
 						Piece curPiece = chessBoard[file][rank];
 						Position[] potentialMoves = curPiece.possibleMoves(this);
-						if (potentialMoves != null) {
+						if (potentialMoves.length > 0) {
 							return false;
 						}
 					}
 				}
 			}
 		}
+		
+		System.out.println("Checkmate");
 		return true;
 	}
 
@@ -299,13 +338,22 @@ public class ClientBoard extends Board {
 																				// the current player
 						Piece curPiece = chessBoard[file][rank];
 						Position[] potentialMoves = curPiece.possibleMoves(this);
-						if (potentialMoves != null) {
+						if (potentialMoves.length > 0) {
 							return false;
 						}
 					}
 				}
 			}
 		}
+		System.out.println("Stalemate");
 		return true;
+	}
+	
+	public int getState() {
+		return gameState;
+	}
+	
+	public void setState(int gs) {
+		gameState = gs;
 	}
 }
