@@ -111,7 +111,7 @@ public class ChessClient extends JFrame implements WindowListener {
 							nc.write("CHEK");
 							nc.disconnect();
 						} else if (cb.stalemate()) {
-							cb.setState(GameState.STALEMATE_LOSS);
+							cb.setState(GameState.STALEMATE);
 							nc.write("STAL");
 							nc.disconnect();
 						} else

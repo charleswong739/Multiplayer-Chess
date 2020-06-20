@@ -25,13 +25,6 @@ public class ClientBoard extends Board {
 	private BufferedImage selectbg;
 	private BufferedImage movespoint;
 	private BufferedImage[] endCards;
-	
-	private BufferedImage checkmate_white;
-	private BufferedImage checkmate_black;
-	private BufferedImage stalemate_white;
-	private BufferedImage stalemate_black;
-	private BufferedImage resign_white;
-	private BufferedImage resign_black;
 
 	private Team orientation;
 
@@ -44,7 +37,7 @@ public class ClientBoard extends Board {
 		super();
 		orientation = o;
 		gameState = GameState.ACTIVE;
-		endCards = new BufferedImage[6];
+		endCards = new BufferedImage[5];
 
 		try {
 			bg = ImageIO.read(new File("sprites/bg.png"));
@@ -55,17 +48,15 @@ public class ClientBoard extends Board {
 			if (orientation == Team.WHITE) {
 				endCards[0] = ImageIO.read(new File("sprites/endcards/checkmate_white_win.png"));
 				endCards[1] = ImageIO.read(new File("sprites/endcards/checkmate_white_loss.png"));
-				endCards[2] = ImageIO.read(new File("sprites/endcards/stalemate_white_win.png"));
-				endCards[3] = ImageIO.read(new File("sprites/endcards/stalemate_white_loss.png"));
-				endCards[4] = ImageIO.read(new File("sprites/endcards/resign_white_win.png"));
-				endCards[5] = ImageIO.read(new File("sprites/endcards/resign_white_loss.png"));
+				endCards[2] = ImageIO.read(new File("sprites/endcards/stalemate.png"));
+				endCards[3] = ImageIO.read(new File("sprites/endcards/resign_white_win.png"));
+				endCards[4] = ImageIO.read(new File("sprites/endcards/resign_white_loss.png"));
 			} else {
 				endCards[0] = ImageIO.read(new File("sprites/endcards/checkmate_black_win.png"));
 				endCards[1] = ImageIO.read(new File("sprites/endcards/checkmate_black_loss.png"));
-				endCards[2] = ImageIO.read(new File("sprites/endcards/stalemate_black_win.png"));
-				endCards[3] = ImageIO.read(new File("sprites/endcards/stalemate_black_loss.png"));
-				endCards[4] = ImageIO.read(new File("sprites/endcards/resign_black_win.png"));
-				endCards[5] = ImageIO.read(new File("sprites/endcards/resign_black_loss.png"));
+				endCards[2] = ImageIO.read(new File("sprites/endcards/stalemate.png"));
+				endCards[3] = ImageIO.read(new File("sprites/endcards/resign_black_win.png"));
+				endCards[4] = ImageIO.read(new File("sprites/endcards/resign_black_loss.png"));
 			}
 
 		} catch (IOException e) {
@@ -239,7 +230,7 @@ public class ClientBoard extends Board {
 		} else if (command.equals("CHEK")) {
 			gameState = GameState.CHECKMATE_VICTORY;
 		} else if (command.equals("STAL")) {
-			gameState = GameState.STALEMATE_VICTORY;
+			gameState = GameState.STALEMATE;
 		} else if (command.equals("RESN")) {
 			gameState = GameState.RESIGN_VICTORY;
 		}
