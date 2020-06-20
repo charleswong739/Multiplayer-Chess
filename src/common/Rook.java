@@ -120,4 +120,7 @@ public class Rook extends Piece {
 		return list.toArray(new Position[list.size()]);
 	}
 
+	public String toString() {
+		return "Rook";
+	}
 }

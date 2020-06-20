@@ -103,4 +103,8 @@ public class Knight extends Piece {
 		
 		return list.toArray(new Position[list.size()]);
 	}
+	
+	public String toString() {
+		return "Knight";
+	}
 }

@@ -187,4 +187,7 @@ public class Queen extends Piece {
 		return list.toArray(new Position[list.size()]);
 	}
 
+	public String toString() {
+		return "Queen";
+	}
 }

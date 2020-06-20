@@ -40,7 +40,7 @@ public class ClientBoard extends Board {
 		endCards = new BufferedImage[5];
 
 		try {
-			bg = ImageIO.read(new File("sprites/bg.png"));
+			bg = ImageIO.read(new File("sprites/lettered_bg.png"));
 			selectbg = ImageIO.read(new File("sprites/selectbg.png"));
 			movespoint = ImageIO.read(new File("sprites/movespoint.png"));
 			
@@ -69,9 +69,9 @@ public class ClientBoard extends Board {
 
 		if (selected != null) {
 			if (orientation == Team.WHITE) {
-				g.drawImage(selectbg, selected.getPos().file * 60, 420 - selected.getPos().rank * 60, null);
+				g.drawImage(selectbg, selected.getPos().file * 60 + 40, 460 - selected.getPos().rank * 60, null);
 			} else {
-				g.drawImage(selectbg, 420 - selected.getPos().file * 60, selected.getPos().rank * 60, null);
+				g.drawImage(selectbg, 460 - selected.getPos().file * 60, selected.getPos().rank * 60 + 40, null);
 			}
 		}
 
@@ -81,11 +81,11 @@ public class ClientBoard extends Board {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				if (orientation == Team.WHITE) {
-					pieceX = i * 60;
-					pieceY = 420 - j * 60;
+					pieceX = i * 60 + 40;
+					pieceY = 460 - j * 60;
 				} else {
-					pieceX = 420 - i * 60;
-					pieceY = j * 60;
+					pieceX = 460 - i * 60;
+					pieceY = j * 60 + 40;
 				}
 
 				if (chessBoard[i][j] != null) {
@@ -97,15 +97,15 @@ public class ClientBoard extends Board {
 		if (possibleMoves != null) {
 			for (int i = 0; i < possibleMoves.length; i++) {
 				if (orientation == Team.WHITE) {
-					g.drawImage(movespoint, possibleMoves[i].file * 60, 420 - possibleMoves[i].rank * 60, null);
+					g.drawImage(movespoint, possibleMoves[i].file * 60 + 40, 460 - possibleMoves[i].rank * 60, null);
 				} else {
-					g.drawImage(movespoint, 420 - possibleMoves[i].file * 60, possibleMoves[i].rank * 60, null);
+					g.drawImage(movespoint, 460 - possibleMoves[i].file * 60, possibleMoves[i].rank * 60 + 40, null);
 				}
 			}
 		}
 		
 		if (gameState != GameState.ACTIVE)
-			g.drawImage(endCards[gameState],120, 180, null);
+			g.drawImage(endCards[gameState],159, 212, null);
 	}
 
 	/**

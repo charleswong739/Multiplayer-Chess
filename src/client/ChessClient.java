@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -29,7 +30,8 @@ public class ChessClient extends JFrame implements WindowListener {
 	NetClient nc;
 	boolean turn;
 	
-	private ChessPanel panel;
+	private ChessPanel chessPanel;
+	private InfoPanel infoPanel;
 
 	ChessClient() {
 
@@ -41,13 +43,16 @@ public class ChessClient extends JFrame implements WindowListener {
 		nc.start();
 		
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		//		this.setSize(480, 480);
+//		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.setResizable(false);
 
 		// instantiate the panel and add to current component
-		panel = new ChessPanel();
-		this.add(panel);
+		chessPanel = new ChessPanel();
+		this.add(chessPanel);
 		this.addWindowListener(this);
+		
+//		infoPanel = new InfoPanel();
+//		this.add(infoPanel);
 
 		// more setup
 		this.pack();
@@ -60,16 +65,16 @@ public class ChessClient extends JFrame implements WindowListener {
 		BufferedImage connecting;
 		BufferedImage searching;
 
-		ChessPanel() {
+		private ChessPanel() {
 			try {
-				connecting = ImageIO.read(new File("sprites/connecting.png"));
-				searching = ImageIO.read(new File("sprites/searching.png"));
+				connecting = ImageIO.read(new File("sprites/lettered_connecting.png"));
+				searching = ImageIO.read(new File("sprites/lettered_searching.png"));
 			} catch (IOException e) {
 				System.out.println("Connecting images not found");
 				e.printStackTrace();
 			}
 
-			this.setPreferredSize(new Dimension(480, 480));
+			this.setPreferredSize(new Dimension(560, 560));
 			this.addMouseListener(this);
 		}
 
@@ -128,9 +133,9 @@ public class ChessClient extends JFrame implements WindowListener {
 			if (turn) {
 				Position p;
 				if (cb.getOrientation() == Team.WHITE) {
-					p = new Position(e.getX()/60, 7 - e.getY()/60);
+					p = new Position((e.getX()-40)/60, 7 - (e.getY()-40)/60);
 				} else {
-					p = new Position(7 - e.getX()/60, e.getY()/60);
+					p = new Position(7 - (e.getX()-40)/60, (e.getY()-40)/60);
 				}
 				
 				if (cb.makeMove(p, nc)) {
@@ -163,6 +168,13 @@ public class ChessClient extends JFrame implements WindowListener {
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
+		}
+	}
+	
+	private class InfoPanel extends JPanel{
+		
+		private InfoPanel() {
+			this.setPreferredSize(new Dimension(560, 240));
 		}
 	}
 
