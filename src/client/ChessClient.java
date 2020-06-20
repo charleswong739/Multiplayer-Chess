@@ -130,18 +130,20 @@ public class ChessClient extends JFrame implements WindowListener {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if (turn) {
-				Position p;
-				if (cb.getOrientation() == Team.WHITE) {
-					p = new Position((e.getX()-40)/60, 7 - (e.getY()-40)/60);
-				} else {
-					p = new Position(7 - (e.getX()-40)/60, (e.getY()-40)/60);
-				}
-				
-				if (cb.makeMove(p, nc)) {
-					turn = false;
-				} else {
-					cb.selectPiece(p);
+			if (e.getX() < 520 && e.getX() > 40 && e.getY() < 520 && e.getX() > 40) {
+				if (turn) {
+					Position p;
+					if (cb.getOrientation() == Team.WHITE) {
+						p = new Position((e.getX()-40)/60, 7 - (e.getY()-40)/60);
+					} else {
+						p = new Position(7 - (e.getX()-40)/60, (e.getY()-40)/60);
+					}
+
+					if (cb.makeMove(p, nc)) {
+						turn = false;
+					} else {
+						cb.selectPiece(p);
+					}
 				}
 			}
 		}
