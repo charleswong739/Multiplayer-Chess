@@ -1,18 +1,22 @@
-package common;
-
 /**
- * 
+ * Board
+ * Version 1.0
  * @author Charles Wong
- *
+ * 2020-06-21
+ * Abstract class holding 2-d array of pieces
  */
 
-public abstract class Board {
+//package statement
+package common;
 
-	protected Piece[][] chessBoard;
+public abstract class Board {
+	//class variables
+	protected Piece[][] chessBoard;  //holds pieces
 	
 	private King whiteKing;
 	private King blackKing;
 	
+	//Constructor
 	protected Board() {
 		chessBoard = new Piece[8][8];
 		
@@ -66,16 +70,31 @@ public abstract class Board {
 		blackKing = new King(Team.BLACK, new Position(Position.E, 7));
 		chessBoard[4][7] = blackKing;
 	}
-
+	
+	/**
+	 *getBoard()
+	 *@param: null
+	 *@return: the 2-d array holding the pieces
+	 */
 	public Piece[][] getBoard() {
 		return chessBoard;
 	}
 	
+	/**
+	 *getWhiteKing()
+	 *@param: null
+	 *@return: the white king
+	 */
 	public King getWhiteKing() {
 		return whiteKing;
 	}
 	
+	/**
+	 *getWhiteKing()
+	 *@param: null
+	 *@return: the black king
+	 */
 	public King getBlackKing() {
 		return blackKing;
 	}
-}
+} // end of Board  Class
