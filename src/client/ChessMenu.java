@@ -96,7 +96,7 @@ class ChessMenu extends JFrame implements KeyListener, ActionListener {
 			
 			this.setPreferredSize(new Dimension(626, 626));
 		}
-		
+	
 		/* paintComponent
   		 * @param: Graphics g
   		 * @return: null
