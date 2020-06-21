@@ -292,23 +292,19 @@ public class ClientBoard extends Board {
 		if (!k.inCheck(chessBoard)) {
 			return false;
 		}
-		
-		for (int file = 0; file < 7; file++) {
-			for (int rank = 0; rank < 7; rank++) {
+
+		for (int file = 0; file < 8; file++) {
+			for (int rank = 0; rank < 8; rank++) {
 				if (chessBoard[file][rank] != null) { // If a piece is there
 					if (chessBoard[file][rank].getTeam() == this.orientation) { // If that piece is on the same team as
 																				// the current player
-						Piece curPiece = chessBoard[file][rank];
-						Position[] potentialMoves = curPiece.possibleMoves(this);
-						if (potentialMoves.length > 0) {
+						if (chessBoard[file][rank].possibleMoves(this).length > 0)
 							return false;
-						}
 					}
 				}
 			}
 		}
-		
-		System.out.println("Checkmate");
+
 		return true;
 	}
 
@@ -322,21 +318,17 @@ public class ClientBoard extends Board {
 		if (k.inCheck(chessBoard)) {
 			return false;
 		}
-		for (int file = 0; file < 7; file++) {
-			for (int rank = 0; rank < 7; rank++) {
+		for (int file = 0; file < 8; file++) {
+			for (int rank = 0; rank < 8; rank++) {
 				if (chessBoard[file][rank] != null) { // If a piece is there
 					if (chessBoard[file][rank].getTeam() == this.orientation) { // If that piece is on the same team as
 																				// the current player
-						Piece curPiece = chessBoard[file][rank];
-						Position[] potentialMoves = curPiece.possibleMoves(this);
-						if (potentialMoves.length > 0) {
+						if (chessBoard[file][rank].possibleMoves(this).length > 0)
 							return false;
-						}
 					}
 				}
 			}
 		}
-		System.out.println("Stalemate");
 		return true;
 	}
 	
