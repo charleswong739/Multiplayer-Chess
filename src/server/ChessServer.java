@@ -14,44 +14,46 @@ import java.net.Socket;
  *
  */
 public class ChessServer {
-
-
     //Constants
-    final int PORT = 48209;
-    final int MAXPLAYER = 10;
-
-    ServerSocket serverSocket;
-
-    int clientNum = 0;
+    private final int PORT = 48209;
+    private int serverCount = 0;
+    private ServerSocket serverSocket;
+    private int clientNum = 0;
 
     public static void main(String[] args){
         ChessServer server = new ChessServer();
-        server.start();
+        server.run();
     }
 
-    public void start(){
-        System.out.println("Waiting for Connection...");
+    public void run(){
+        ConnectionThread newConnection = new ConnectionThread();
+        newConnection.run();
+    }
+    class ConnectionThread implements Runnable{
+        public void run(){
+            try {
+                serverSocket = new ServerSocket(PORT);
+                while(true) {
+                    serverCount++;
+                    System.out.println("Waiting for Connection on Server " + serverCount + "...");
+                    Socket socket1 = serverSocket.accept();
+                    clientNum++;
+                    System.out.println("Connection" + clientNum + " is Successful");
 
-        try {
-            serverSocket = new ServerSocket(PORT);
-            while (true){
-                Socket socket1 = serverSocket.accept();
-                clientNum++;
-                System.out.println("Connection" + clientNum + " is Successful");
-
-                Socket socket2 = serverSocket.accept();
-                clientNum++;
-                System.out.println("Connection" + clientNum + " is Successful");
-
-                Thread playerThread = new Thread(new GameThread(socket1, socket2));
-                playerThread.run();
+                    Socket socket2 = serverSocket.accept();
+                    clientNum++;
+                    System.out.println("Connection" + clientNum + " is Successful");
+                    clientNum = 0;
+                    Thread playerThread = new Thread(new GameThread(socket1, socket2, serverCount));
+                    playerThread.start();
+                }
+            } catch (IOException e) {
+                System.out.println("Connection Failed");
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            System.out.println("Connection Failed");
-            e.printStackTrace();
         }
     }
-    class GameThread extends Thread {
+    class GameThread implements Runnable {
         private boolean gameStart = false;
         private Socket socketA;
         private Socket socketB;
@@ -62,9 +64,12 @@ public class ChessServer {
         private BufferedReader inputB;
         private BufferedReader currIn;
         volatile boolean liveThread = true;
-        public GameThread (Socket socketA, Socket socketB){
+        private boolean online = true;
+        private int currentServerNum;
+        public GameThread (Socket socketA, Socket socketB, int num){
             this.socketA = socketA;
             this.socketB = socketB;
+            this.currentServerNum = num;
         }
         public void run(){
             //initialization
@@ -86,16 +91,17 @@ public class ChessServer {
             outputB.flush();
             //getting message
             String[] cmd = null;
-            while (liveThread){
+            while (liveThread && online){
                 //ready
                 int ready = 0;
-                while (!gameStart) {
+                while (!gameStart && online) {
                     try {
                         String msg = currIn.readLine();
                         System.out.println(msg);
                         cmd = msg.split(" ");
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println("A player has disconnected");
+                        disconnect();
                     }
                     //ready command
                     if (cmd[0].equals("READY")){
@@ -109,7 +115,7 @@ public class ChessServer {
                 }
                 currIn = inputA;
                 currOut = outputB;
-                while (gameStart){
+                while (gameStart && online){
                     try {
                         String message = currIn.readLine();
                         System.out.println("Message recieved: " + message);
@@ -143,10 +149,10 @@ public class ChessServer {
                 currOut.flush();
                 socketA.close();
                 socketB.close();
-                serverSocket.close();
-                System.out.println("Server restarting...");
-                ChessServer server = new ChessServer();
-                server.start();
+                System.out.println("Server restarting session...");
+                gameStart = false;
+                liveThread = false;
+                online = false;
             } catch (IOException e){
                 e.printStackTrace();
             }
