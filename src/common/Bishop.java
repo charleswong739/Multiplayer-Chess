@@ -120,4 +120,4 @@ public class Bishop extends Piece {
 	public String toString() {
 		return "Bishop";
 	}
-}
+}//end of Bishop class
