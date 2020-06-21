@@ -10,7 +10,7 @@ import java.net.Socket;
 
 /**
  * 
- * @author Michael Du
+ * @author Michael Du, Sherwin Chiu
  *
  */
 public class ChessServer {

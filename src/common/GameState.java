@@ -1,5 +1,10 @@
 package common;
 
+/**
+ * 
+ * @author Charles Wong
+ *
+ */
 public class GameState {
 	public static final int ACTIVE = 6;
 	public static final int CHECKMATE_VICTORY = 0;

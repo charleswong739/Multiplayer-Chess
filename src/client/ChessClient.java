@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
@@ -62,8 +63,8 @@ public class ChessClient extends JFrame implements WindowListener {
 		movePanel = new MovePanel();
 		this.add(movePanel, BorderLayout.SOUTH);
 		
-		infoPanel = new InfoPanel();
-		this.add(infoPanel, BorderLayout.EAST);
+//		infoPanel = new InfoPanel();
+//		this.add(infoPanel, BorderLayout.EAST);
 
 		// more setup
 		this.pack();
@@ -161,7 +162,7 @@ public class ChessClient extends JFrame implements WindowListener {
 
 					if (cb.makeMove(p, nc)) {
 						turn = false;
-						movePanel.addMoveToLog(cb.getOrientation().toString(), selectedString, p.toString());
+						movePanel.addMoveToLog(cb.getOrientation().toString(), selectedString, p.toString(), cb.getBoard()[p.file][p.rank].toString());
 						selectedString = null;
 					} else {
 						cb.selectPiece(p);
@@ -214,11 +215,14 @@ public class ChessClient extends JFrame implements WindowListener {
 			Border border = BorderFactory.createLineBorder(Color.BLACK);
 		    moveLog.setBorder(BorderFactory.createCompoundBorder(border,
 		            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		    
+		    JScrollPane scroll = new JScrollPane (moveLog, 
+		    		   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		    			
 			this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 			
 			this.add(moveLabel);
-			this.add(moveLog);
+			this.add(scroll);
 			
 			this.setPreferredSize(new Dimension(560, 120));
 			this.setBackground(Color.LIGHT_GRAY);
@@ -226,17 +230,23 @@ public class ChessClient extends JFrame implements WindowListener {
 		
 		public void addMoveToLog(String team, String s) {
 			String letters = "ABCDEFG";
-			String edited = " (" + letters.charAt(s.charAt(5)-48) + ", "+ (s.charAt(7)-47) + ") to (" + letters.charAt(s.charAt(9)-48) + ", " + (s.charAt(11)-47) + ")\n";
+			String piece = cb.getBoard()[s.charAt(9)-48][s.charAt(11)-48].toString();
+			String edited = " " + piece + " (" + letters.charAt(s.charAt(5)-48) + ", "+ (s.charAt(7)-47) + ") to (" + letters.charAt(s.charAt(9)-48) + ", " + (s.charAt(11)-47) + ")\n";
 			
 			moveLog.append(team + edited);
+			moveLog.setCaretPosition(moveLog.getDocument().getLength());
 		}
 		
-		public void addMoveToLog(String team, String posA, String posB) {
-			moveLog.append(team + ": " + posA + " to " + posB);
+		public void addMoveToLog(String team, String posA, String posB, String piece) {
+			moveLog.append(team + ": " + piece + " " + posA + " to " + posB + "\n");
+			moveLog.setCaretPosition(moveLog.getDocument().getLength());
 		}
 	}
 	
 	private class InfoPanel extends JPanel {
+		
+		private JTextArea whiteInfo;
+		private JTextArea blackInfo;
 		
 		private InfoPanel() {
 			this.setPreferredSize(new Dimension(160, 560));
