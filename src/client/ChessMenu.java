@@ -1,6 +1,3 @@
-package client;
-
-import java.awt.BorderLayout;
 /*
  * ChessMenu
  * Version 1.0
@@ -8,6 +5,12 @@ import java.awt.BorderLayout;
  * Date: June 12 2020
  * Description: Launches the application, displays a menu
  */
+
+//package statements
+package client;
+
+//import statements
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -16,16 +19,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 class ChessMenu extends JFrame implements KeyListener, ActionListener {
+	
+	//Main Method
 	public static void main(String[] args) {
 		new ChessMenu();
 	}
@@ -77,7 +84,8 @@ class ChessMenu extends JFrame implements KeyListener, ActionListener {
 	private class DecoratedPanel extends JPanel {
 		
 		BufferedImage pic;
-
+		
+		//Constructor
 		DecoratedPanel() {			
 			try {
 				pic = ImageIO.read(new File("sprites/ChessBackground.png"));
@@ -88,7 +96,12 @@ class ChessMenu extends JFrame implements KeyListener, ActionListener {
 			
 			this.setPreferredSize(new Dimension(626, 626));
 		}
-
+		
+		/* paintComponent
+  		 * @param: Graphics g
+  		 * @return: null
+  		 * draws the background image
+  		 */
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			g.drawImage(pic, 0, 0, null);
@@ -121,8 +134,8 @@ class ChessMenu extends JFrame implements KeyListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == onlineMultiplayerButton) {
-			new ChessClient();
+			new ChessClient();  //starts chess client
 		}
 	}
 
-}
+} //end of ChessMenu Class
