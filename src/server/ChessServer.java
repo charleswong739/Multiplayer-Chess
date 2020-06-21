@@ -50,21 +50,18 @@ public class ChessServer {
             System.out.println("Connection Failed");
             e.printStackTrace();
         }
-
     }
-
     class GameThread extends Thread {
-        boolean gameStart = false;
-        Socket socketA;
-        Socket socketB;
-        PrintWriter outputA;
-        PrintWriter outputB;
-        PrintWriter currOut;
-        BufferedReader inputA;
-        BufferedReader inputB;
-        BufferedReader currIn;
+        private boolean gameStart = false;
+        private Socket socketA;
+        private Socket socketB;
+        private PrintWriter outputA;
+        private PrintWriter outputB;
+        private PrintWriter currOut;
+        private BufferedReader inputA;
+        private BufferedReader inputB;
+        private BufferedReader currIn;
         volatile boolean liveThread = true;
-
         public GameThread (Socket socketA, Socket socketB){
             this.socketA = socketA;
             this.socketB = socketB;
@@ -80,7 +77,6 @@ public class ChessServer {
                 outputB = new PrintWriter(socketB.getOutputStream());
                 currIn = inputA;
                 currOut = outputB;
-
             }catch(IOException e) {
                 e.printStackTrace();
             }
@@ -111,21 +107,58 @@ public class ChessServer {
                         System.out.println("Game started");
                     }
                 }
-                
                 currIn = inputA;
                 currOut = outputB;
-                
                 while (gameStart){
                     try {
                         String message = currIn.readLine();
                         System.out.println("Message recieved: " + message);
-                        currOut.println(message);
-                        currOut.flush();
-                        switchStreams();
-                    } catch (IOException e){
-                        e.printStackTrace();
+                        if(message != null) {
+                            currOut.println(message);
+                            currOut.flush();
+                            switchStreams();
+                        } else if(message.equals("CHEK")){
+                            System.out.println("A player has won.");
+                            currOut.println("You have won! GG.");
+                            currOut.flush();
+                            disconnect();
+                        } else if(message.equals("STAL")) {
+                            System.out.println("Stalemate reached.");
+                            currOut.println("Stalemate. No winners.");
+                            currOut.flush();
+                            disconnect();
+                        } else if(message.equals("RESN")){
+                            System.out.println("A player has resigned.");
+                            currOut.println("Opponent Resigned.");
+                            currOut.flush();
+                            disconnect();
+                        }
+                        else{
+                            System.out.println("A player has disconnected.");
+                            gameStart = false;
+                            currOut.println("The opponent has disconnected.");
+                            currOut.flush();
+                            disconnect();
+                        }
+                    } catch (Exception e){
+                        System.out.println("Player has disconnected.");
+                        disconnect();
                     }
                 }
+            }
+        }
+        private void disconnect(){
+            try {
+                currOut.println("The opponent has disconnected.");
+                currOut.flush();
+                socketA.close();
+                socketB.close();
+                serverSocket.close();
+                System.out.println("Server restarting...");
+                ChessServer server = new ChessServer();
+                server.start();
+            } catch (IOException e){
+                e.printStackTrace();
             }
         }
         private void switchStreams(){
