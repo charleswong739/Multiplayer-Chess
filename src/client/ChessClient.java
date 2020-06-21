@@ -1,7 +1,7 @@
 /**
  * ChessClient
  * Version 1.0
- * @author Charles Wong
+ * @author Charles Wong, Theo Liu
  * 06-21-2020
  * Sets up JFrame for game, and runs the NetClient Class.
  */
@@ -253,7 +253,7 @@ public class ChessClient extends JFrame implements WindowListener {
    		 * @return: null
    		 */
 		public void addMoveToLog(String team, String s) {
-			String letters = "ABCDEFG";
+			String letters = "ABCDEFGH";
 			String piece = cb.getBoard()[s.charAt(9)-48][s.charAt(11)-48].toString();
 			String edited = " " + piece + " (" + letters.charAt(s.charAt(5)-48) + ", "+ (s.charAt(7)-47) + ") to (" + letters.charAt(s.charAt(9)-48) + ", " + (s.charAt(11)-47) + ")\n";
 			
