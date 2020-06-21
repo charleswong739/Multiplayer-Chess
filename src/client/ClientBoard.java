@@ -40,7 +40,11 @@ public class ClientBoard extends Board {
 		endCards = new BufferedImage[5];
 
 		try {
-			bg = ImageIO.read(new File("sprites/lettered_bg.png"));
+			if (orientation == Team.WHITE)
+				bg = ImageIO.read(new File("sprites/white_lettered_bg.png"));
+			else
+				bg = ImageIO.read(new File("sprites/black_lettered_bg.png"));
+			
 			selectbg = ImageIO.read(new File("sprites/selectbg.png"));
 			movespoint = ImageIO.read(new File("sprites/movespoint.png"));
 			
