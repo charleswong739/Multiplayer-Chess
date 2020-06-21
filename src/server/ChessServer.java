@@ -113,32 +113,22 @@ public class ChessServer {
                     try {
                         String message = currIn.readLine();
                         System.out.println("Message recieved: " + message);
-                        if(message != null) {
-                            currOut.println(message);
-                            currOut.flush();
-                            switchStreams();
-                        } else if(message.equals("CHEK")){
+                        if(message.equals("CHEK")){
                             System.out.println("A player has won.");
-                            currOut.println("You have won! GG.");
-                            currOut.flush();
                             disconnect();
                         } else if(message.equals("STAL")) {
                             System.out.println("Stalemate reached.");
-                            currOut.println("Stalemate. No winners.");
-                            currOut.flush();
                             disconnect();
                         } else if(message.equals("RESN")){
                             System.out.println("A player has resigned.");
-                            currOut.println("Opponent Resigned.");
-                            currOut.flush();
                             disconnect();
-                        }
-                        else{
+                        } else if (message == null){
                             System.out.println("A player has disconnected.");
-                            gameStart = false;
-                            currOut.println("The opponent has disconnected.");
-                            currOut.flush();
                             disconnect();
+                        } else{
+                            currOut.println(message);
+                            currOut.flush();
+                            switchStreams();
                         }
                     } catch (Exception e){
                         System.out.println("Player has disconnected.");
@@ -149,7 +139,7 @@ public class ChessServer {
         }
         private void disconnect(){
             try {
-                currOut.println("The opponent has disconnected.");
+                currOut.println("DISC");
                 currOut.flush();
                 socketA.close();
                 socketB.close();
