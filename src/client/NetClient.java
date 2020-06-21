@@ -37,14 +37,16 @@ class NetClient extends Thread {
 	public void run() {
 		
 		// Connect
-		try {
-			System.out.println("Attempting to connect...");
-			socket = new Socket(HOST, PORT);
-			System.out.println("Connected");
-			connected = true;
-		} catch (Exception e) {
-			System.out.println("Failed connection");
-			e.printStackTrace();
+		while (!connected) {
+			try {
+//				System.out.println("Attempting to connect...");
+				socket = new Socket(HOST, PORT);
+				System.out.println("Connected");
+				connected = true;
+			} catch (Exception e) {
+//				System.out.println("Failed connection");
+//				e.printStackTrace();
+			}
 		}
 		
 		try {

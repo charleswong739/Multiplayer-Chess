@@ -3,6 +3,7 @@ package common;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -11,6 +12,7 @@ import client.ClientBoard;
 public class Test extends JFrame {
 
 	private Panel panel;
+	private InfoPanel pane;
 	
 	Test() {
 		
@@ -18,12 +20,15 @@ public class Test extends JFrame {
 		// other settings as well, but i've never really found a use for them
 		super("Swing Template");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		this.setSize(480, 480);
+		this.getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		this.setResizable(false);
 		
 		// instantiate the panel and add to current component
 		panel = new Panel();
 		this.add(panel);
+		
+		pane = new InfoPanel();
+		this.add(pane);
 		
 		// more setup
 		this.pack();
@@ -66,6 +71,12 @@ public class Test extends JFrame {
 			repaint(); // this is needed to refresh the panel every frame
 //			revalidate(); // this is needed to refresh any components you might have, but since
 						  // we have none its not needed
+		}
+	}
+	
+	private class InfoPanel extends JPanel {
+		InfoPanel() {
+			this.setPreferredSize(new Dimension(480, 100));
 		}
 	}
 }

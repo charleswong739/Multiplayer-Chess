@@ -1,6 +1,9 @@
 package client;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,9 +14,13 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.Border;
 
 import common.GameState;
 import common.Position;
@@ -31,6 +38,7 @@ public class ChessClient extends JFrame implements WindowListener {
 	boolean turn;
 	
 	private ChessPanel chessPanel;
+	private MovePanel movePanel;
 	private InfoPanel infoPanel;
 
 	ChessClient() {
@@ -43,16 +51,19 @@ public class ChessClient extends JFrame implements WindowListener {
 		nc.start();
 		
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-//		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+//		this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 		this.setResizable(false);
 
 		// instantiate the panel and add to current component
 		chessPanel = new ChessPanel();
-		this.add(chessPanel);
+		this.add(chessPanel, BorderLayout.CENTER);
 		this.addWindowListener(this);
 		
-//		infoPanel = new InfoPanel();
-//		this.add(infoPanel);
+		movePanel = new MovePanel();
+		this.add(movePanel, BorderLayout.SOUTH);
+		
+		infoPanel = new InfoPanel();
+		this.add(infoPanel, BorderLayout.EAST);
 
 		// more setup
 		this.pack();
@@ -64,6 +75,8 @@ public class ChessClient extends JFrame implements WindowListener {
 		
 		BufferedImage connecting;
 		BufferedImage searching;
+		
+		String selectedString; // weird way to write this but oh well
 
 		private ChessPanel() {
 			try {
@@ -118,8 +131,16 @@ public class ChessClient extends JFrame implements WindowListener {
 							cb.setState(GameState.STALEMATE);
 							nc.write("STAL");
 							nc.disconnect();
-						} else
+						} else {
+							
+							if (cb.getOrientation() == Team.WHITE) {
+								movePanel.addMoveToLog("BLACK:", s);
+							} else {
+								movePanel.addMoveToLog("WHITE:", s);
+							}
+							
 							turn = true;
+						}
 					}
 				}
 			}
@@ -140,8 +161,11 @@ public class ChessClient extends JFrame implements WindowListener {
 
 					if (cb.makeMove(p, nc)) {
 						turn = false;
+						movePanel.addMoveToLog(cb.getOrientation().toString(), selectedString, p.toString());
+						selectedString = null;
 					} else {
 						cb.selectPiece(p);
+						selectedString = p.toString();
 					}
 				}
 			}
@@ -172,10 +196,51 @@ public class ChessClient extends JFrame implements WindowListener {
 		}
 	}
 	
-	private class InfoPanel extends JPanel{
+	private class MovePanel extends JPanel {
+		
+		private JLabel moveLabel;
+		private JTextArea moveLog;
+		
+		private MovePanel() {
+			
+			moveLabel = new JLabel("Move Log");
+			moveLabel.setAlignmentX(CENTER_ALIGNMENT);
+			moveLabel.setFont(new Font(moveLabel.getFont().getName(), Font.PLAIN, 15));
+
+			moveLog = new JTextArea("Welcome to Chess\n\n");
+			moveLog.setBackground(Color.LIGHT_GRAY);
+			moveLog.setEditable(false);
+			
+			Border border = BorderFactory.createLineBorder(Color.BLACK);
+		    moveLog.setBorder(BorderFactory.createCompoundBorder(border,
+		            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		    			
+			this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+			
+			this.add(moveLabel);
+			this.add(moveLog);
+			
+			this.setPreferredSize(new Dimension(560, 120));
+			this.setBackground(Color.LIGHT_GRAY);
+		}
+		
+		public void addMoveToLog(String team, String s) {
+			String letters = "ABCDEFG";
+			String edited = " (" + letters.charAt(s.charAt(5)-48) + ", "+ (s.charAt(7)-47) + ") to (" + letters.charAt(s.charAt(9)-48) + ", " + (s.charAt(11)-47) + ")\n";
+			
+			moveLog.append(team + edited);
+		}
+		
+		public void addMoveToLog(String team, String posA, String posB) {
+			moveLog.append(team + ": " + posA + " to " + posB);
+		}
+	}
+	
+	private class InfoPanel extends JPanel {
 		
 		private InfoPanel() {
-			this.setPreferredSize(new Dimension(560, 240));
+			this.setPreferredSize(new Dimension(160, 560));
+			this.setBackground(Color.BLUE);
 		}
 	}
 
