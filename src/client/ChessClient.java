@@ -110,8 +110,7 @@ public class ChessClient extends JFrame implements WindowListener {
 						
 						if (s.equals("CHEK") || s.equals("STAL") || s.equals("RESN"))
 							nc.disconnect();
-
-						if (cb.checkmate()) {
+						else if (cb.checkmate()) {
 							cb.setState(GameState.CHECKMATE_LOSS);
 							nc.write("CHEK");
 							nc.disconnect();
