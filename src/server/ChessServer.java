@@ -1,6 +1,15 @@
+/**
+ * Chess Server
+ * Version 1.0
+ * @author Michael Du, Sherwin Chiu
+ * 2020-06-21
+ * Allows clients to connect and online play
+ */
+
+//package statement
 package server;
 
-
+//import statement
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,11 +17,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * 
- * @author Michael Du, Sherwin Chiu
- *
- */
 public class ChessServer {
     //Constants
     private final int PORT = 48209;
@@ -20,16 +24,26 @@ public class ChessServer {
     private ServerSocket serverSocket;
     private int clientNum = 0;
 
+    //main method
     public static void main(String[] args){
         ChessServer server = new ChessServer();
         server.run();
     }
-
+    
+    /**
+     * run
+     * @param: null
+     * @return: null
+     * runs Connectionthread
+     */
     public void run(){
         ConnectionThread newConnection = new ConnectionThread();
         newConnection.run();
     }
+    
+    //----------------------INNER CLASS-----------------------------------//
     class ConnectionThread implements Runnable{
+        
         public void run(){
             try {
                 serverSocket = new ServerSocket(PORT);
@@ -52,25 +66,34 @@ public class ChessServer {
                 e.printStackTrace();
             }
         }
-    }
+    } //end of ConnectionThread class
+    
+    //----------------------INNER CLASS-----------------------------------//
     class GameThread implements Runnable {
+        
+        //inner class variables
         private boolean gameStart = false;
         private Socket socketA;
         private Socket socketB;
+        //writers
         private PrintWriter outputA;
         private PrintWriter outputB;
         private PrintWriter currOut;
+        //readers
         private BufferedReader inputA;
         private BufferedReader inputB;
         private BufferedReader currIn;
         volatile boolean liveThread = true;
         private boolean online = true;
         private int currentServerNum;
+        
+        //constructor
         public GameThread (Socket socketA, Socket socketB, int num){
             this.socketA = socketA;
             this.socketB = socketB;
             this.currentServerNum = num;
         }
+        
         public void run(){
             //initialization
             try {
@@ -85,16 +108,18 @@ public class ChessServer {
             }catch(IOException e) {
                 e.printStackTrace();
             }
+            
             outputA.println("SRW");
             outputB.println("SRB");
             outputA.flush();                                 //flush the output stream to make sure the message
             outputB.flush();
+            
             //getting message
             String[] cmd = null;
             while (liveThread && online){
                 //ready
                 int ready = 0;
-                while (!gameStart && online) {
+                while (!gameStart && online) { //finds disconnections/connections before game starts
                     try {
                         String msg = currIn.readLine();
                         System.out.println(msg);
@@ -113,12 +138,15 @@ public class ChessServer {
                         System.out.println("Game started");
                     }
                 }
+                
                 currIn = inputA;
                 currOut = outputB;
-                while (gameStart && online){
+                
+                while (gameStart && online){ //game starts
                     try {
                         String message = currIn.readLine();
                         System.out.println("Message recieved: " + message);
+                        //find end results
                         if(message.equals("CHEK")){
                             System.out.println("A player has won.");
                             disconnect();
@@ -143,6 +171,13 @@ public class ChessServer {
                 }
             }
         }
+        
+        /**
+         * disconnect()
+         * @param: null
+         * @return: null
+         * closes sockets, and disconnects.
+         */
         private void disconnect(){
             try {
                 currOut.println("DISC");
@@ -157,6 +192,13 @@ public class ChessServer {
                 e.printStackTrace();
             }
         }
+        
+        /**
+         * switchStreams
+         * @param: null
+         * @return: null
+         * changes input/output streams
+         */
         private void switchStreams(){
             if (currIn.equals(inputA)){
                 currIn = inputB;
@@ -169,5 +211,5 @@ public class ChessServer {
                 currOut = outputA;
             }
         }
-    }
-}
+    } //end of GameThread class  
+} //end of ChessServer class
