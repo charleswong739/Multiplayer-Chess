@@ -1,16 +1,22 @@
+/**
+ * Knight
+ * Version 1.0
+ * @author Charles Wong
+ * 2020-06-21
+ * Finds possible moves for a knight
+ */
+
+//package statement
 package common;
 
+//import statements
 import java.util.ArrayList;
 
 import client.ClientBoard;
 
-/**
- * 
- * @author Charles Wong
- *
- */
 public class Knight extends Piece {
-
+	
+	//Constructor
 	public Knight(Team t, Position pos) {
 		super("knight", 3, t, pos);
 	}
@@ -104,7 +110,13 @@ public class Knight extends Piece {
 		return list.toArray(new Position[list.size()]);
 	}
 	
+	/**
+  	 *toString
+ 	 *@param: null
+ 	 *@return: String of piece name
+ 	 *gets string
+ 	 */
 	public String toString() {
 		return "Knight";
 	}
-}
+} //end of Knight class
