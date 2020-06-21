@@ -1,7 +1,7 @@
 /**
  * ChessClient
  * Version 1.0
- * @author Charles Wong
+ * @author Charles Wong, Theo Liu
  * 06-21-2020
  * Sets up JFrame for game, and runs the NetClient Class.
  */
