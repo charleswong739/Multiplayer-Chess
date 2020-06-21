@@ -1,16 +1,22 @@
+/**
+ * Bishop
+ * Version 1.0
+ * @author Charles Wong
+ * 2020-06-21
+ * Finds possible moves for a bishop
+ */
+
+//package statement
 package common;
 
+//import statements
 import java.util.ArrayList;
 
 import client.ClientBoard;
 
-/**
- * 
- * @author Charles Wong
- *
- */
 public class Bishop extends Piece {
 
+	//Constructor
 	public Bishop(Team t, Position pos) {
 		super("bishop", 3, t, pos);
 	}
@@ -104,7 +110,13 @@ public class Bishop extends Piece {
 		
 		return list.toArray(new Position[list.size()]);
 	}
-
+	
+	/**
+	 *toString
+	 *@param: null
+	 *@return: String of piece name
+	 *gets string
+	 */
 	public String toString() {
 		return "Bishop";
 	}
