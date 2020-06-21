@@ -1,5 +1,15 @@
+/**
+ * NetClient
+ * Version 1.0
+ * @author Charles Wong
+ * 2020-06-21
+ * Description: conencts to server, sends and recieves messages on moves.
+ */
+
+//packae statements
 package client;
 
+//import statements
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -7,13 +17,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-/**
- * 
- * @author Charles Wong
- *
- */
 class NetClient extends Thread {
-
+	
+	//server settings
 	private final String HOST = "99.254.124.185";
 	private final int PORT = 48209;
 	
@@ -27,13 +33,20 @@ class NetClient extends Thread {
 	private boolean read;
 	
 	private String message;
-
+	
+	//Constructor
 	public NetClient() {
 		connected = false;
 		match = false;
 		read = false;
 	}
 
+	/**
+	 *run
+	 *@param: null
+	 *@return: null
+	 * runs the thread
+	 */
 	public void run() {
 		
 		// Connect
@@ -49,6 +62,7 @@ class NetClient extends Thread {
 			}
 		}
 		
+		//create readers/writers
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -87,7 +101,7 @@ class NetClient extends Thread {
 			while (read && connected) {
 				try {
 					if (reader.ready()) {
-						message = reader.readLine();
+						message = reader.readLine(); //read message
 						read = false;
 						System.out.println("Message recieved: " + message);
 					}
@@ -123,25 +137,56 @@ class NetClient extends Thread {
 		}
 	}
 	
+	/*
+	 * status
+ 	 * @param: null
+ 	 * @return: boolean of connected or not
+	 * checks connection
+ 	 */
 	synchronized public boolean status() {
 		return connected;
 	}
 	
+	/**
+ 	 * disconnect
+  	 * @param: null
+  	 * @return: null
+  	 * disconnects from the server
+  	 */
 	synchronized public void disconnect() {
 		System.out.println("Attempting to disconnect...");
 		connected = false;
 	}
 	
+	/*
+ 	 * receive
+  	 * @param: null
+  	 * @return: null
+	 * allows client to receive messages
+  	 */
 	synchronized public void recieve() {
 		read = true;
 	}
 	
+	/*
+  	 * poll
+ 	 * @param: null
+ 	 * @return: null
+	 * checks for message
+ 	 */
 	synchronized public boolean poll() {
-		if (message == null)
+		if (message == null) {
 			return false;
+		}
 		return true;
 	}
 	
+	/*
+	 * read
+ 	 * @param: null
+	 * @return: String of message.
+	 * prints out and returns the server message
+ 	 */
 	synchronized public String read() {
 		String s = message;
 		message = null;
@@ -151,6 +196,12 @@ class NetClient extends Thread {
 		return s;
 	}
 	
+	/*
+	 * write
+  	 * @param: String of stuff
+  	 * @return: null
+  	 * writes message to the server
+ 	 */
 	synchronized public void write(String s) {
 		try {
 			writer.write(s + "\n");
@@ -161,4 +212,4 @@ class NetClient extends Thread {
 			e.printStackTrace();
 		}
 	}
-}
+} //end of NetClient Class
