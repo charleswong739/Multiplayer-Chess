@@ -1,16 +1,21 @@
+/**
+ * Queen
+ * Version 1.0
+ * @author Charles Wong
+ * 2020-06-21
+ * Finds possible moves for a queen
+ */
+
+//package statement
 package common;
 
+//import statements
 import java.util.ArrayList;
 
 import client.ClientBoard;
 
-/**
- * 
- * @author Charles Wong
- *
- */
 public class Queen extends Piece {
-
+	//constructor
 	public Queen(Team t, Position pos) {
 		super("queen", 9, t, pos);
 	}
@@ -187,7 +192,13 @@ public class Queen extends Piece {
 		return list.toArray(new Position[list.size()]);
 	}
 
+	/**
+ 	 *toString
+  	 *@param: null
+ 	 *@return: String of piece name
+ 	 *gets string
+ 	 */
 	public String toString() {
 		return "Queen";
 	}
-}
+} //end of Queen class

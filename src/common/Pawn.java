@@ -1,16 +1,22 @@
+/**
+ * Pawn
+ * Version 1.0
+ * @author Charles Wong
+ * 2020-06-21
+ * Finds possible moves for a pawn
+ */
+
+//package statement
 package common;
 
+//import statements
 import java.util.ArrayList;
 
 import client.ClientBoard;
 
-/**
- * 
- * @author Charles Wong
- *
- */
 public class Pawn extends Piece {
-
+	
+	//Constructor
 	public Pawn(Team t, Position p) {
 		super ("pawn", 1, t, p);
 	}
@@ -28,11 +34,13 @@ public class Pawn extends Piece {
 						list.add(target);
 					}
 				}
-				
+
 				if (position.rank == 1) { // two step
 					target = new Position(position.file, position.rank+2);
-					if (board.simulateMove(position, target)) {
-						list.add(target);
+					if (chessBoard[target.file][target.rank] == null) {
+						if (board.simulateMove(position, target)) {
+							list.add(target);
+						}
 					}
 				}
 
@@ -93,7 +101,13 @@ public class Pawn extends Piece {
 		return list.toArray(new Position[list.size()]);
 	}
 
+	/**
+ 	 *toString
+	 *@param: null
+	 *@return: String of piece name
+	 *gets string
+ 	 */
 	public String toString() {
 		return "Pawn";
 	}
-}
+} //end of Pawn class

@@ -1,29 +1,47 @@
+/**
+ * Rook
+ * Version 1.0
+ * @author Charles Wong
+ * 2020-06-21
+ * Finds possible moves for a rook
+ */
+
+//package statement
 package common;
 
+//import statements
 import java.util.ArrayList;
 
 import client.ClientBoard;
 
-/**
- * 
- * @author Charles Wong
- *
- */
 public class Rook extends Piece {
-	
+	//class variable (castling)
 	private boolean canCastle;
-
+	
+	//Constructor
 	public Rook(Team t, Position p) {
 		super ("rook", 5, t, p);
 		
 		canCastle = true;
 	}
 	
+	/**
+	 *setPos
+	 * @param: Position to be set 
+	 * @return: null
+	 * sets the new position after castling
+	 */
 	public void setPos(Position p) {
 		position = p;
 		canCastle = false;
 	}
 	
+	/**
+	 * getCastleStatus
+	 * @param: null
+	 * @return: boolean if can castle or not
+	 * determines if it is possible to castle
+	 */
 	public boolean getCastleStatus() {
 		return canCastle;
 	}
@@ -119,8 +137,13 @@ public class Rook extends Piece {
 		
 		return list.toArray(new Position[list.size()]);
 	}
-
+	/**
+         *toString
+ 	 *@param: null
+ 	 *@return: String of piece name
+ 	 *gets string
+ 	 */
 	public String toString() {
 		return "Rook";
 	}
-}
+} //end of Rook Class

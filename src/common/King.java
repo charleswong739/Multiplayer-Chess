@@ -1,24 +1,35 @@
+/**
+ * King
+ * Version 1.0
+ * @author Charles Wong, Andy Li
+ * 2020-06-21
+ * Finds possible moves for a king, castling, and in-check or not
+ */
+
+//package statement
 package common;
 
+//import staements
 import java.util.ArrayList;
 
 import client.ClientBoard;
 
-/**
- * 
- * @author Charles Wong, Andy Li
- *
- */
 public class King extends Piece {
-
+	//class variables
 	private boolean canCastle;
-
+	
+	//Constructor
 	public King(Team t, Position pos) {
 		super("king", 0, t, pos);
 
 		canCastle = true;
 	}
-
+	
+	/**
+	 *setPos
+	 *@param: position to be set
+	 *@return: null
+	 */
 	public void setPos(Position p) {
 		position = p;
 		canCastle = false;
@@ -131,6 +142,7 @@ public class King extends Piece {
 	}
 
 	/**
+	 * inCheck
 	 * Checks to see if this piece (the King) is in check
 	 * 
 	 * @param board the ClientBoard object the King is in
@@ -342,14 +354,27 @@ public class King extends Piece {
 
 		return false;
 	}
-
+	
+	/**
+	 *toPiece
+	 *@param: board, file and rank, (position), team 
+	 *@return:boolean
+	 *returns if there is a piece in a certain position
+ 	 */
 	private boolean isPiece(Piece[][] board, int file, int rank, Team t, Class<?> c) {
-		if (board[file][rank] == null)
+		if (board[file][rank] == null){
 			return false;
+		}
 		return (board[file][rank].team == t && board[file][rank].getClass() == c);
 	}
-
+	
+	/**
+	 *toString
+	 *@param: null
+	 *@return: String of piece name
+	 *gets string
+ 	 */
 	public String toString() {
 		return "King";
 	}
-}
+} //end of King class
