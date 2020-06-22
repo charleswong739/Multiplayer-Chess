@@ -93,12 +93,15 @@ public class ChessServer {
             while (liveThread && online){
                 //ready
                 int ready = 0;
+                String msg = "";
                 while (!gameStart && online) {
                     try {
-                        String msg = currIn.readLine();
+                        msg = currIn.readLine();
                         System.out.println(msg);
                         cmd = msg.split(" ");
                     } catch (IOException e) {
+                        currOut.println(msg);
+                        currOut.flush();
                         System.out.println("A player has disconnected");
                         disconnect();
                     }
