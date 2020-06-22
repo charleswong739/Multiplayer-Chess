@@ -24,7 +24,6 @@ public class ChessServer {
         ChessServer server = new ChessServer();
         server.run();
     }
-
     public void run(){
         ConnectionThread newConnection = new ConnectionThread();
         newConnection.run();
@@ -118,6 +117,8 @@ public class ChessServer {
                 while (gameStart && online){
                     try {
                         String message = currIn.readLine();
+                        currOut.println(message);
+                        currOut.flush();
                         System.out.println("Message recieved: " + message);
                         if(message.equals("CHEK")){
                             System.out.println("A player has won.");
@@ -132,8 +133,6 @@ public class ChessServer {
                             System.out.println("A player has disconnected.");
                             disconnect();
                         } else{
-                            currOut.println(message);
-                            currOut.flush();
                             switchStreams();
                         }
                     } catch (Exception e){
