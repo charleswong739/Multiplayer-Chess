@@ -34,11 +34,13 @@ public class Pawn extends Piece {
 						list.add(target);
 					}
 				}
-				
+
 				if (position.rank == 1) { // two step
 					target = new Position(position.file, position.rank+2);
-					if (board.simulateMove(position, target)) {
-						list.add(target);
+					if (chessBoard[target.file][target.rank] == null) {
+						if (board.simulateMove(position, target)) {
+							list.add(target);
+						}
 					}
 				}
 
