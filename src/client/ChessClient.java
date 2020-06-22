@@ -15,18 +15,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -213,10 +215,11 @@ public class ChessClient extends JFrame implements WindowListener {
 	
 	//----------------------INNER CLASS-----------------------------------//
 	//creates a panel for previous moves.
-	private class MovePanel extends JPanel {
+	private class MovePanel extends JPanel implements ActionListener {
 		
 		private JLabel moveLabel;
 		private JTextArea moveLog;
+		private JButton resignButton;
 		
 		/*
 		 *Constructor
@@ -226,6 +229,13 @@ public class ChessClient extends JFrame implements WindowListener {
 			moveLabel = new JLabel("Move Log");
 			moveLabel.setAlignmentX(CENTER_ALIGNMENT);
 			moveLabel.setFont(new Font(moveLabel.getFont().getName(), Font.PLAIN, 15));
+			
+			resignButton = new JButton("Resign");
+			resignButton.setAlignmentX(CENTER_ALIGNMENT);
+			resignButton.addActionListener(this);
+//		    resignButton.setBackground(Color.RED);
+//		    resignButton.setOpaque(true);
+//		    resignButton.setBorderPainted(false);
 
 			moveLog = new JTextArea("Welcome to Chess\n\n");
 			moveLog.setBackground(Color.LIGHT_GRAY);
@@ -237,13 +247,14 @@ public class ChessClient extends JFrame implements WindowListener {
 		    
 		    JScrollPane scroll = new JScrollPane (moveLog, 
 		    		   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		    			
+		    
 			this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 			
 			this.add(moveLabel);
 			this.add(scroll);
+			this.add(resignButton);
 			
-			this.setPreferredSize(new Dimension(560, 120));
+			this.setPreferredSize(new Dimension(560, 140));
 			this.setBackground(Color.LIGHT_GRAY);
 		}
 		
@@ -269,6 +280,17 @@ public class ChessClient extends JFrame implements WindowListener {
 		public void addMoveToLog(String team, String posA, String posB, String piece) {
 			moveLog.append(team + ": " + piece + " " + posA + " to " + posB + "\n");
 			moveLog.setCaretPosition(moveLog.getDocument().getLength());
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == resignButton) {
+				if (cb != null && cb.getState() == GameState.ACTIVE) {
+					cb.setState(GameState.RESIGN_LOSS);
+					nc.write("RESN");
+					nc.disconnect();
+				}
+			}
 		}
 	} //end of MovePanel class
 	
