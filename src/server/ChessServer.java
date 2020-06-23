@@ -1,6 +1,14 @@
+/**
+ * ChessServer
+ * Version 1.0
+ * @author Michael Du
+ *
+ */
+
+//package statements
 package server;
 
-
+//import statements
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,27 +16,38 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * 
- * @author Michael Du
- *
- */
 public class ChessServer {
     //Constants
     private final int PORT = 48209;
     private int serverCount = 0;
     private ServerSocket serverSocket;
     private int clientNum = 0;
-
+    
+    //main method
     public static void main(String[] args){
         ChessServer server = new ChessServer();
         server.run();
     }
+    
+    /**
+     * run
+     * @param: null
+     * @return: null
+     * starts the connection thread.
+     */
     public void run(){
         ConnectionThread newConnection = new ConnectionThread();
         newConnection.run();
     }
+    
+    //Inner class
     class ConnectionThread implements Runnable{
+        /**
+         * run
+         * @param: null
+         * @return: null
+         * starts the connection thread.
+         */
         public void run(){
             try {
                 serverSocket = new ServerSocket(PORT);
@@ -52,24 +71,38 @@ public class ChessServer {
             }
         }
     }
+    
+    //Inner Class
     class GameThread implements Runnable {
+        //class variables
         private boolean gameStart = false;
         private Socket socketA;
         private Socket socketB;
+        //writers
         private PrintWriter outputA;
         private PrintWriter outputB;
         private PrintWriter currOut;
+        //readers
         private BufferedReader inputA;
         private BufferedReader inputB;
         private BufferedReader currIn;
         volatile boolean liveThread = true;
         private boolean online = true;
         private int currentServerNum;
+        
+        //constructor
         public GameThread (Socket socketA, Socket socketB, int num){
             this.socketA = socketA;
             this.socketB = socketB;
             this.currentServerNum = num;
         }
+        
+        /**
+         * run
+         * @param: null
+         * @return: null
+         * starts the game thread
+         */
         public void run(){
             //initialization
             try {
@@ -145,6 +178,13 @@ public class ChessServer {
                 }
             }
         }
+        
+        /**
+         * disconnect
+         * @param: null
+         * @return: null
+         * client disconnects from server
+         */
         private void disconnect(){
             try {
                 currOut.println("DISC");
@@ -159,6 +199,13 @@ public class ChessServer {
                 e.printStackTrace();
             }
         }
+        
+        /**
+         * switchStreams
+         * @param: null
+         * @return: null
+         * switches input and output streams
+         */
         private void switchStreams(){
             if (currIn.equals(inputA)){
                 currIn = inputB;
@@ -173,3 +220,4 @@ public class ChessServer {
         }
     }
 }
+//end of ChessServer
